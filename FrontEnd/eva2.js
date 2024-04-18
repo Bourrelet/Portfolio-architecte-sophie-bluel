@@ -61,14 +61,14 @@ for(let work of works) {
 
 let filtering = function(buttonArg){
     console.log('filtrage en cours');
-    if(buttonArg.id == 0 ){ 
-        initWork(); 
+    if(buttonArg.id == 0 ){ // tous
+        initWork(); // Affiche toute la gallerie
         console.log('initWork lance');
     } else {
-        gallerie.innerHTML = "";
+        gallerie.innerHTML = ""; // reset gallerie
         for(let work of works) {
             if(work.category.id == buttonArg.id){
-                console.log(`work id -> ${work.category.name} ${work.category.id} button id -> ${buttonArg.id}`)
+                console.log(`Categorie ${work.category.id} -> ${work.category.name}  button id -> ${buttonArg.id}`)
         gallerie.innerHTML += `<figure>
         <img src="${work.imageUrl}" alt="${work.title}">
         <figcaption>${work.title}</figcaption>

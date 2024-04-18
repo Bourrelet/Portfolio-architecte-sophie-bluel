@@ -59,11 +59,16 @@ for(let work of works) {
 
 // Affichage par filtre
 
-let filtering = function(button){
-    if(button.id == 0 ){ initWork()} 
-    else {
+let filtering = function(buttonArg){
+    console.log('filtrage en cours');
+    if(buttonArg.id == 0 ){ 
+        initWork(); 
+        console.log('initWork lance');
+    } else {
+        gallerie.innerHTML = "";
         for(let work of works) {
-            if(work.id == button.id){
+            if(work.category.id == buttonArg.id){
+                console.log(`work id -> ${work.category.name} ${work.category.id} button id -> ${buttonArg.id}`)
         gallerie.innerHTML += `<figure>
         <img src="${work.imageUrl}" alt="${work.title}">
         <figcaption>${work.title}</figcaption>
@@ -75,13 +80,16 @@ let filtering = function(button){
 }
 
 let buttonList = document.querySelectorAll(".filterButton");
-console.log(buttonList)
+// console.log(buttonList)
 for (let button of buttonList){ // button prend les valeurs de la NodeList
-    console.log(button);
+    console.log(`bouton ${button.id} sur la boucle`)
     button.addEventListener("click", filtering(button));
 }
 
-
+// C'est mon event listener qui marche pas.
+// Il lance la fonction filtering pour toute la nodeListe au lieu du bouton clique.
+// Du coup filtering reussi toutes les conditions.
+// et tous les travaux s'affichent.
 
 // Affichage des travaux
     

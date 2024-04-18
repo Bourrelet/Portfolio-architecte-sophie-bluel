@@ -1,11 +1,4 @@
-// filter -> 'http://localhost:5678/api/categories'
-// work -> 'http://localhost:5678/api/works'
-
-// Recup les travaux
-// Recup et afficher les filtres
-// faire un eventlistener pour le click sur le HTMLElement des filtres
-// En fonction du filtre clicke -> afficher les travaux correspondants
-
+// Recuperation DATA
 let getWorks = async function() {
     const response = await fetch('http://localhost:5678/api/works');
     const works = await response.json();
@@ -19,15 +12,17 @@ let getFilters = async function() {
     return filters
 }
 let filters = await getFilters()
+// Recuperation DATA
 
-console.log(filters.length)
 
 
-let displayFilters = async function() {
+// Affichage des Filtres
+let displayFilters = function() {
 
     // DOM Anchor and filter Box
     let filterParent = document.getElementById('filter-daddy');
     let filterBox = document.createElement('div');
+    filterBox.classList.add("filterBox"); // Le style css ne s'applique pas a la classe -_-
     filterParent.appendChild(filterBox);
 
     // Bouton Tous Filter Display
@@ -45,27 +40,50 @@ let displayFilters = async function() {
         filterTag.classList.add("filterButton");         
     }
 }
-
 displayFilters()
-
-// l'argument est le bouton clicke
-// Je dois afficher works en fonction de son ID
-// Je dois respecter le path
-
-let filtering = function(element){
+// Affichage des Filtres
 
 
+// Affichage des travaux
+let gallerie = document.querySelector(".gallery");
+
+// Affichage au chargement
+let initWork = function() {
+for(let work of works) { 
+    gallerie.innerHTML += `<figure>
+    <img src="${work.imageUrl}" alt="${work.title}">
+    <figcaption>${work.title}</figcaption>
+    </figure>`
+}}
+// window.addEventListener("load",(initWork()));
+
+// Affichage par filtre
+
+let filtering = function(button){
+    if(button.id == 0 ){ initWork()} 
+    else {
+        for(let work of works) {
+            if(work.id == button.id){
+        gallerie.innerHTML += `<figure>
+        <img src="${work.imageUrl}" alt="${work.title}">
+        <figcaption>${work.title}</figcaption>
+        </figure>`
+    }
+        }
+
+    }
 }
 
-let buttonList = document.querySelectorAll("filterButton");
+let buttonList = document.querySelectorAll(".filterButton");
+console.log(buttonList)
 for (let button of buttonList){ // button prend les valeurs de la NodeList
-    button.addEventListener(click, filtering(button));
-    console.log(e.target)
+    console.log(button);
+    button.addEventListener("click", filtering(button));
 }
 
 
 
-
+// Affichage des travaux
     
 
 

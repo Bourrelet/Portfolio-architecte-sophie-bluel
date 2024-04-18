@@ -186,3 +186,21 @@ footer nav ul {
 	margin: 2em
 }
 
+
+/* Modif Par Eva */
+.filterButton {
+	border: 2px solid black;
+	border-radius: 25%;
+	background-color: grey;
+	color: blue;
+	width: fit-content;
+}
+.filterButton:hover{
+	cursor: pointer;
+}
+
+.fitlerBox { /* Le flex ne marche pas -_- */
+	display: flex !important;
+	justify-content: space-around;
+}
+/* Modif Par Eva */

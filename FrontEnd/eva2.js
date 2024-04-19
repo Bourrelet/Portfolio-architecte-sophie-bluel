@@ -60,7 +60,7 @@ window.addEventListener("load",(initWork()));
 
 // Affichage par filtre
 
-let filtering = function(buttonArg){
+let filtering = function(buttonArg){ // filtre les travaux en fonction du bouton clique
     console.log('filtrage en cours');
     if(buttonArg.id == 0 ){ // tous
         initWork(); // Affiche toute la gallerie
@@ -70,26 +70,21 @@ let filtering = function(buttonArg){
         for(let work of works) {
             if(work.category.id == buttonArg.id){
                 console.log(`Categorie ${work.category.id} -> ${work.category.name}  button id -> ${buttonArg.id}`)
-        gallerie.innerHTML += `<figure>
-        <img src="${work.imageUrl}" alt="${work.title}">
-        <figcaption>${work.title}</figcaption>
-        </figure>`
-    }
-        }
-
+                gallerie.innerHTML += `<figure>
+                <img src="${work.imageUrl}" alt="${work.title}">
+                <figcaption>${work.title}</figcaption>
+                </figure>`
+                    }
+                }
     }
 }
-
-
-let buttonList = document.querySelectorAll(".filterButton");
+let buttonList = document.querySelectorAll(".filterButton"); // Identifie le bouton clique et le passe en argument de filtering
 for (let button of buttonList){ // button prend les valeurs de la NodeList
     button.addEventListener("click", () => {
         console.log(`click sur bouton ${button.id}`)
         filtering(button)
     });
-    
 }
-
 // Affichage des travaux
     
 

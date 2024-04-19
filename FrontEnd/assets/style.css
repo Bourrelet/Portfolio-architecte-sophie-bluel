@@ -203,4 +203,17 @@ footer nav ul {
 	display: flex !important;
 	justify-content: space-around;
 }
+
+.loginBox {
+	display: flex;
+	flex-direction: column;
+	text-align: center;
+	width: fit-content;
+	margin: 10px auto;
+}
+
+.loginBox label {
+	width: 100%;
+	text-align: left;
+}
 /* Modif Par Eva */

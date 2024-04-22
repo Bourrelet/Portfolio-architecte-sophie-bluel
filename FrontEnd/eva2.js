@@ -62,11 +62,11 @@ window.addEventListener("load",(initWork()));
 
 let filtering = function(buttonArg){ // filtre les travaux en fonction du bouton clique
     console.log('filtrage en cours');
+    gallerie.innerHTML = ""; // reset gallerie
     if(buttonArg.id == 0 ){ // tous
         initWork(); // Affiche toute la gallerie
         console.log('Lancement initWork');
-    } else {
-        gallerie.innerHTML = ""; // reset gallerie
+    } else {         
         for(let work of works) {
             if(work.category.id == buttonArg.id){
                 console.log(`Categorie ${work.category.id} -> ${work.category.name}  button id -> ${buttonArg.id}`)

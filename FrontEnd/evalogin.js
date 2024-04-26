@@ -50,16 +50,15 @@ loginButton.addEventListener("click", event => {  // Connexion si click
                 return pouniette.json();  // On convertit la reponse en format JSON pour l'exploiter 
 
             }
-
         })
-        .then((pouniettejson) => {
-            userToken = pouniettejson
-            // console.log(userToken); // On arrive a recuperer le token ICI
+        .then((json) => {
+            userToken = json
+            console.log(userToken); // On arrive a recuperer le token ICI
                   
         })
 
 });
-console.log(userToken)
+
 
 
         

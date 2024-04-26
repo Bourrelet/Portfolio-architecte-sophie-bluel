@@ -1,9 +1,7 @@
-// {
-//     "userId": 1,
-//     "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTcxNDExOTM2NSwiZXhwIjoxNzE0MjA1NzY1fQ.bmKPgm5Y2sDp2Iq0B87OSt4BuIuxN_38lB-MwDgYocE"
-//   }
-
-// Le token est donne dans la reponse 200 du loginrequest.  Je le passe en JSON et j'en fait quoi?  
+// https://fr.javascript.info/formdata
+// L'API accepte seulement  :  'application/json'
+// FormData renvoit du :  'multipart/form-data'
+// un FormData en bodyPOST ca ne marche donc pas -> Il faut donc que j'extrais les valeurs des champs moi meme.
 
 
 
@@ -12,14 +10,11 @@ const loginURL = 'http://localhost:5678/api/users/login'; // L'URL de swagger
 const loginButton = document.querySelector("button"); // Mon bouton "se connecter"
 const loginForm = document.querySelector("form"); // Mon formulaire login
 
-// Je n'arrive pas a extraire et envoyer les valeurs du formulaire avec formData.
 
-        //https://fr.javascript.info/formdata   // -> encodage formdata
-        // Content-Type: multipart/form-data.
-        // -H 'accept: application/json' \
 
-// Je pourrais eventuellement le faire manuellement en accedant aux balises avec .value
-// en attendant ->
+
+
+
 const userData = `{
     "email": "sophie.bluel@test.tld",
     "password": "S0phie"
@@ -48,6 +43,7 @@ loginButton.addEventListener("click", event => {  // Connexion
     event.preventDefault();
     try {
         console.log('on essaye')
+
         let token = postFormRequest(loginForm, loginURL);  // Recuperation du token ... ?
         console.log(`La reponse stockee dans token ->`);
         console.log(token)
@@ -56,6 +52,7 @@ loginButton.addEventListener("click", event => {  // Connexion
         
     } catch { 
         console.log('on rattrape')
+
         console.log("Erreur dans l'identifiant ou le mot de passe"); 
     }   
 

@@ -1,4 +1,4 @@
-export let userToken;
+export let userToken; // J'ai besoin qu'il prenne la valeur locale de la promesse pour l'importation.
 
 
 // https://fr.javascript.info/formdata
@@ -53,7 +53,8 @@ loginButton.addEventListener("click", event => {  // Connexion si click
         })
         .then((json) => {
             userToken = json
-            console.log(userToken); // On arrive a recuperer le token ICI
+            console.log('local promise userToken ->'); // On arrive a recuperer le token ICI
+            console.log(userToken); // Objet userId ; token
                   
         })
 

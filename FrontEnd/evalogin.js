@@ -12,22 +12,34 @@ const loginURL = 'http://localhost:5678/api/users/login'; // L'URL de swagger
 const loginButton = document.querySelector("button"); // Mon bouton "se connecter"
 const loginForm = document.querySelector("form"); // Mon formulaire login
 
+// Je n'arrive pas a extraire et envoyer les valeurs du formulaire avec formData.
+
+        //https://fr.javascript.info/formdata   // -> encodage formdata
+        // Content-Type: multipart/form-data.
+        // -H 'accept: application/json' \
+
+// Je pourrais eventuellement le faire manuellement en accedant aux balises avec .value
+// en attendant ->
+const userData = `{
+    "email": "sophie.bluel@test.tld",
+    "password": "S0phie"
+    }`
 
 
 let postFormRequest = async function(anyForm, anyURL) {  // requete POST 
+        console.log('Lancement fonction fetch')
     
-        let userData = new FormData(anyForm); // Recuperation de formData
-        console.log(`userData : ${userData}`); 
+        // let userData = new FormData(anyForm); // Je voudrais recuperer ma data comme ca.
+        console.log(`verification anyForm : ${anyForm}`);
+        console.log(`verification anyURL : ${anyURL}`);
 
         let response = await fetch(anyURL, { // requete Post
             method: "POST",
-            body: userData 
+            headers: {"Content-Type": "application/json"},
+            body: userData
         });
 
-        console.log(await response.json()); // Traitement de la reponse
-        let token = response.json();
-        console.log(token); 
-
+        let token = await response.json(); // parsing      
         return token;
 
 };
@@ -35,12 +47,15 @@ let postFormRequest = async function(anyForm, anyURL) {  // requete POST
 loginButton.addEventListener("click", event => {  // Connexion
     event.preventDefault();
     try {
-        let token =  postFormRequest(loginForm, loginURL);  // Recuperation du token ... ?
-        console.log(token);
-        // window.location.href= homePageURL;   // redirection
+        console.log('on essaye')
+        let token = postFormRequest(loginForm, loginURL);  // Recuperation du token ... ?
+        console.log(`La reponse stockee dans token ->`);
+        console.log(token)
         
+        // window.location.href= homePageURL;   // redirection        
         
     } catch { 
+        console.log('on rattrape')
         console.log("Erreur dans l'identifiant ou le mot de passe"); 
     }   
 

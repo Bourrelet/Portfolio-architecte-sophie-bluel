@@ -1,3 +1,6 @@
+export let userToken;
+
+
 // https://fr.javascript.info/formdata
 // L'API accepte seulement  :  'application/json'
 // FormData renvoit du :  'multipart/form-data'
@@ -50,12 +53,13 @@ loginButton.addEventListener("click", event => {  // Connexion si click
 
         })
         .then((pouniettejson) => {
-            console.log(pouniettejson.token); // On arrive a recuperer le token ICI
+            userToken = pouniettejson
+            // console.log(userToken); // On arrive a recuperer le token ICI
                   
         })
 
 });
-
+console.log(userToken)
 
 
         

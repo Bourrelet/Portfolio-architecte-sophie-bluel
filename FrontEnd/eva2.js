@@ -1,3 +1,5 @@
+import { userToken } from "./evalogin";
+
 // Recuperation DATA
 let getWorks = async function() {
     const response = await fetch('http://localhost:5678/api/works');
@@ -13,6 +15,21 @@ let getFilters = async function() {
 }
 let filters = await getFilters()
 // Recuperation DATA
+
+//ADMIN MODE
+if(userToken !== undefined) {
+    adminMod()
+} 
+
+let adminMod = function() {
+        let modifButton = document.querySelector("#portfolio");
+        modifButton.innerHTML += `<span>
+        <i class="fa-regular fa-pen-to-square"></i>
+        <p>modifier<p/>
+        </span>
+        `
+};
+//ADMIN MODE
 
 
 
@@ -86,6 +103,8 @@ for (let button of buttonList){ // button prend les valeurs de la NodeList
     });
 }
 // Affichage des travaux
+
+
     
 
 

@@ -11,65 +11,51 @@ const loginURL = 'http://localhost:5678/api/users/login'; // L'URL de swagger
 const loginButton = document.querySelector("button"); // Mon bouton "se connecter"
 const loginForm = document.querySelector("form"); // Mon formulaire login
 
-// Je recup les deux champs dans une liste de HTMLElements
-// Je dois assigner la valeur if input.name=password ; let password = input.name.value
-// Je dois ensuite retourner ca dans un format JSON (interpolation)
 
 let extractDataForm = function() { // Return les valeurs du formulaire directement dans le bon format.
+
    let passwordInput = document.querySelector('input[name="password"]')
    let emailInput = document.querySelector('input[name="email"]')
+
    return `{
     "email": "${emailInput.value}",
     "password": "${passwordInput.value}"
   }`
 }
 
-// const userData = `{
-//     "email": "sophie.bluel@test.tld",
-//     "password": "S0phie"
-//     }`
+loginButton.addEventListener("click", event => {  // Connexion si click
 
-// let bodydata = extractDataForm()
-// console.log(bodydata);
-// console.log(userData)
+        event.preventDefault();
 
-
-let postFormRequest = async function(anyForm, anyURL) {  // requete POST 
-        console.log('Lancement fonction fetch')
-    
-
-        console.log(`verification anyForm : ${anyForm}`);
-        console.log(`verification anyURL : ${anyURL}`);
-
-        let response = await fetch(anyURL, { // requete Post
+        let postLogin = fetch(loginURL, { 
             method: "POST",
             headers: {"Content-Type": "application/json"},
             body: extractDataForm()
         });
 
-        let token = await response.json(); // parsing      
-        return token;
+        postLogin
+        .then((pouniette) => { // La reponse 'serveur';
+            console.log(pouniette.status) // 200 401
 
-};
+            if(!pouniette.ok) {
 
-loginButton.addEventListener("click", event => {  // Connexion
-    event.preventDefault();
-    try {
-        console.log('on essaye')
+                throw new Error("Erreur dans l'identifiant ou le mot de passe");
 
-        let token = postFormRequest(loginForm, loginURL);  // Recuperation du token ... ?
-        console.log(`La reponse stockee dans token ->`);
-        console.log(token)
-        
-        // window.location.href= homePageURL;   // redirection        
-        
-    } catch { 
-        console.log('on rattrape')
+            } else {
 
-        console.log("Erreur dans l'identifiant ou le mot de passe"); 
-    }   
+                window.open(homePageURL, '_blank');
+                return pouniette.json();  // On convertit la reponse en format JSON pour l'exploiter 
+
+            }
+
+        })
+        .then((pouniettejson) => { // d'ou vient json?
+            console.log(pouniettejson.token);
+                  
+        })
 
 });
+
 
 
         

@@ -33,7 +33,7 @@ loginButton.addEventListener("click", event => {  // Connexion si click
             body: extractDataForm()
         });
 
-        postLogin
+        postLogin // Comment arrive-t-on a recuperer la reponse et le json juste avec des .then ?? Cmt ca marche??
         .then((pouniette) => { // La reponse 'serveur';
             console.log(pouniette.status) // 200 401
 
@@ -49,8 +49,8 @@ loginButton.addEventListener("click", event => {  // Connexion si click
             }
 
         })
-        .then((pouniettejson) => { // d'ou vient json?
-            console.log(pouniettejson.token);
+        .then((pouniettejson) => {
+            console.log(pouniettejson.token); // On arrive a recuperer le token ICI
                   
         })
 

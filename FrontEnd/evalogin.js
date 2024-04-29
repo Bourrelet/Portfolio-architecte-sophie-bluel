@@ -1,18 +1,9 @@
-export let userToken; // J'ai besoin qu'il prenne la valeur locale de la promesse pour l'importation.
-
-
-// https://fr.javascript.info/formdata
-// L'API accepte seulement  :  'application/json'
-// FormData renvoit du :  'multipart/form-data'
-// let userData = new FormData(anyForm); // Je voudrais recuperer ma data comme ca. et la mettre dans body
-// un FormData en bodyPOST ca ne marche donc pas -> Il faut donc que j'extrais les valeurs des champs moi meme.
-
-
+// Je n'arrive toujours pas a importer et exporter du code enntre mes fichiers JS
 
 const homePageURL = 'http://127.0.0.1:5500/index.html';
 const loginURL = 'http://localhost:5678/api/users/login'; // L'URL de swagger
-const loginButton = document.querySelector("button"); // Mon bouton "se connecter"
-const loginForm = document.querySelector("form"); // Mon formulaire login
+const loginButton = document.querySelector(".loginBox button"); // Mon bouton "se connecter"
+
 
 
 let extractDataForm = function() { // Return les valeurs du formulaire directement dans le bon format.
@@ -51,15 +42,19 @@ loginButton.addEventListener("click", event => {  // Connexion si click
 
             }
         })
-        .then((json) => {
-            userToken = json
+        .then((json) => { // Recuperation du token
+            let userToken = json
             console.log('local promise userToken ->'); // On arrive a recuperer le token ICI
             console.log(userToken); // Objet userId ; token
+            localStorage.setItem('storedToken', JSON.stringify(userToken));
+            let storagetest = localStorage.getItem('storedToken');
+            console.log(`storedToken-> ${storagetest}`);
+            // Et ici je lance une fonction importee pour modifier la page index.html 
                   
         })
 
 });
-
+ 
 
 
         

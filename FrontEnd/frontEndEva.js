@@ -1,3 +1,7 @@
+// HOMEPAGE //
+// HOMEPAGE //
+// HOMEPAGE //
+
 // Recuperation DATA
 let getWorks = async function() {
     const response = await fetch('http://localhost:5678/api/works');
@@ -86,9 +90,12 @@ for (let button of buttonList){ // button prend les valeurs de la NodeList
 }
 // Affichage des travaux
 
+// HOMEPAGE //
+// HOMEPAGE //
+// HOMEPAGE //
 
-/// Fusion en bas
 
+// Twist (and shout) //
 const homePage = document.querySelector("#homePage");
 const loginPage = document.querySelector("#loginPage");
 const logButt = document.querySelector("#logButton");
@@ -96,8 +103,14 @@ logButt.addEventListener("click", event => {
     homePage.classList.toggle("invisible");
     loginPage.classList.toggle("invisible");    
 })
+// (Shaking it beybey) //
 
-//
+
+/// LOGINPAGE ///
+/// LOGINPAGE ///
+/// LOGINPAGE ///
+
+
 const homePageURL = 'http://127.0.0.1:5500/index.html';
 const loginURL = 'http://localhost:5678/api/users/login'; // L'URL de swagger
 const loginButton = document.querySelector(".loginBox button"); // Mon bouton "se connecter"
@@ -113,8 +126,8 @@ let adminMod = function() {
 
 let extractDataForm = function() { // Return les valeurs du formulaire directement dans le bon format.
 
-    let passwordInput = document.querySelector('input[name="password"]')
-    let emailInput = document.querySelector('input[name="email"]')
+    let passwordInput = document.querySelector('.loginBox input[name="password"]')
+    let emailInput = document.querySelector('.loginBox input[name="email"]')
  
     return `{
      "email": "${emailInput.value}",
@@ -142,17 +155,21 @@ let extractDataForm = function() { // Return les valeurs du formulaire directeme
 
         } else {
             
-            window.location.href = homePageURL;
-            adminMod()
+            // adminMod() // -> Pas glop -> rend inactif les boutons filtres. 
+            // Je peux essayer d'utiliser appendchild et createHtmlElement plutot que innerHTML.
+            homePage.classList.toggle("invisible");
+            loginPage.classList.toggle("invisible");
             return pouniette.json();  // On convertit la reponse en format JSON pour l'exploiter 
 
         }
     })
     .then((json) => { // Recuperation du token -> Objet userId ; token
-        let userToken = json
-        localStorage.setItem('storedToken', JSON.stringify(userToken));
-
-              
+        let userToken = json              
     })
 
 });
+
+
+// / LOGINPAGE ///
+// / LOGINPAGE ///
+// / LOGINPAGE ///

@@ -188,6 +188,12 @@ footer nav ul {
 
 
 /* Modif Par Eva */
+
+.invisible {
+	display: none;
+}
+
+
 .filterButton {
 	border: 2px solid black;
 	border-radius: 25%;
@@ -216,4 +222,6 @@ footer nav ul {
 	width: 100%;
 	text-align: left;
 }
+
+
 /* Modif Par Eva */

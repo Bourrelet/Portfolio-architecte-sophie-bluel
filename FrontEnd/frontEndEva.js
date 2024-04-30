@@ -14,19 +14,6 @@ let getFilters = async function() {
 let filters = await getFilters()
 // Recuperation DATA
 
-// // ADMIN MODE
-
-// export function adminMod() {
-//         let modifButton = document.querySelector("#portfolio");
-//         modifButton.innerHTML += `<span>
-//         <i class="fa-regular fa-pen-to-square"></i>
-//         <p>modifier<p/>
-//         </span>
-//         `
-// };
-// // ADMIN MODE
-
-
 
 // Affichage des Filtres
 let displayFilters = function() {
@@ -100,7 +87,72 @@ for (let button of buttonList){ // button prend les valeurs de la NodeList
 // Affichage des travaux
 
 
-    
+/// Fusion en bas
+
+const homePage = document.querySelector("#homePage");
+const loginPage = document.querySelector("#loginPage");
+const logButt = document.querySelector("#logButton");
+logButt.addEventListener("click", event => {
+    homePage.classList.toggle("invisible");
+    loginPage.classList.toggle("invisible");    
+})
+
+//
+const homePageURL = 'http://127.0.0.1:5500/index.html';
+const loginURL = 'http://localhost:5678/api/users/login'; // L'URL de swagger
+const loginButton = document.querySelector(".loginBox button"); // Mon bouton "se connecter"
 
 
+let adminMod = function() {
+    let modifButton = document.querySelector("#portfolio");
+    modifButton.innerHTML += `<span>
+    <i class="fa-regular fa-pen-to-square"></i>
+    <p>modifier</p>
+    </span>`
+};
 
+let extractDataForm = function() { // Return les valeurs du formulaire directement dans le bon format.
+
+    let passwordInput = document.querySelector('input[name="password"]')
+    let emailInput = document.querySelector('input[name="email"]')
+ 
+    return `{
+     "email": "${emailInput.value}",
+     "password": "${passwordInput.value}"
+   }`
+ }
+
+ loginButton.addEventListener("click", event => {  // Connexion si click
+
+    event.preventDefault();
+
+    let postLogin = fetch(loginURL, { 
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: extractDataForm()
+    });
+
+    postLogin // Comment arrive-t-on a recuperer la reponse et le json juste avec des .then ?? Cmt ca marche??
+    .then((pouniette) => { // La reponse 'serveur';
+        console.log(pouniette.status) // 200 401
+
+        if(!pouniette.ok) {
+
+            throw new Error("Erreur dans l'identifiant ou le mot de passe");
+
+        } else {
+            
+            window.location.href = homePageURL;
+            adminMod()
+            return pouniette.json();  // On convertit la reponse en format JSON pour l'exploiter 
+
+        }
+    })
+    .then((json) => { // Recuperation du token -> Objet userId ; token
+        let userToken = json
+        localStorage.setItem('storedToken', JSON.stringify(userToken));
+
+              
+    })
+
+});

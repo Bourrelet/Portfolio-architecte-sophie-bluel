@@ -190,7 +190,7 @@ footer nav ul {
 /* Modif Par Eva */
 
 .invisible {
-	display: none;
+	display: none !important;
 }
 
 
@@ -205,8 +205,8 @@ footer nav ul {
 	cursor: pointer;
 }
 
-.fitlerBox { /* Le flex ne marche pas -_- */
-	display: flex !important;
+.filterBox {  
+	display: flex;
 	justify-content: space-around;
 }
 

@@ -1,7 +1,4 @@
 // HOMEPAGE //
-// HOMEPAGE //
-// HOMEPAGE //
-
 // Recuperation DATA
 let getWorks = async function() {
     const response = await fetch('http://localhost:5678/api/works');
@@ -16,25 +13,25 @@ let getFilters = async function() {
     return filters
 }
 let filters = await getFilters()
-// Recuperation DATA
-
+// Recuperation DATA\  
 
 // Affichage des Filtres
+// DOM Anchor and filter Box
+let folioAnchor = document.querySelector("#portfolio");
+let gallerieGrid = document.querySelector('.gallery')
+let filterBox = document.createElement('div');
+folioAnchor.insertBefore(filterBox, gallerieGrid); // Insertion des filtres juste avant la gallerie 
+
+// Bouton Tous Filter Display
+let tousButton = document.createElement('div'); 
+filterBox.appendChild(tousButton);
+tousButton.innerText = "Tous";
+tousButton.id = 0; 
+tousButton.classList.add("filterButton");
+
+// Dynamic Filters Display
 let displayFilters = function() {
 
-    // DOM Anchor and filter Box
-    let filterParent = document.getElementById('filter-daddy');
-    let filterBox = document.createElement('div');
-    filterBox.classList.add("filterBox"); // Le style css ne s'applique pas a la classe -_-
-    filterParent.appendChild(filterBox);
-
-    // Bouton Tous Filter Display
-    let tousButton = document.createElement('div'); 
-    filterBox.appendChild(tousButton);
-    tousButton.innerText = "Tous";
-    tousButton.id = 0; 
-    tousButton.classList.add("filterButton");
-    // Dynamic Filters Dipslay
    for(let i = 0; i < filters.length; i++) {
         let filterTag = document.createElement('div');
         filterBox.appendChild(filterTag); 
@@ -42,16 +39,16 @@ let displayFilters = function() {
         filterTag.id = filters[i].id;   
         filterTag.classList.add("filterButton");         
     }
+    filterBox.classList.add("filterBox");
 }
 displayFilters()
 // Affichage des Filtres
 
-
-// Affichage des travaux
+// filtrage
 let gallerie = document.querySelector(".gallery");
 
-// Affichage au chargement
-let initWork = function() {
+// Fonctions Filtrage
+let initWork = function() { 
     console.log('Lancement initWork')
 for(let work of works) { 
     gallerie.innerHTML += `<figure>
@@ -59,10 +56,9 @@ for(let work of works) {
     <figcaption>${work.title}</figcaption>
     </figure>`
 }}
-window.addEventListener("load",(initWork()));
+window.addEventListener("load",(initWork())); // Au chargement de la page
 
-// Affichage par filtre
-
+//Filtrage par click
 let filtering = function(buttonArg){ // filtre les travaux en fonction du bouton clique
     console.log('filtrage en cours');
     gallerie.innerHTML = ""; // reset gallerie
@@ -88,14 +84,11 @@ for (let button of buttonList){ // button prend les valeurs de la NodeList
         filtering(button)
     });
 }
-// Affichage des travaux
-
-// HOMEPAGE //
-// HOMEPAGE //
-// HOMEPAGE //
 
 
-// Twist (and shout) //
+// HOMEPAGE //
+
+// Changement de page au click de login //
 const homePage = document.querySelector("#homePage");
 const loginPage = document.querySelector("#loginPage");
 const logButt = document.querySelector("#logButton");
@@ -103,7 +96,41 @@ logButt.addEventListener("click", event => {
     homePage.classList.toggle("invisible");
     loginPage.classList.toggle("invisible");    
 })
-// (Shaking it beybey) //
+// Changement de page au click de login //
+
+
+let adminMod = function() { 
+    // affiche le bandeau noir
+    let headerAnchor = document.querySelector("header");
+    let modHeaderBand = document.createElement('div');
+    modHeaderBand.innerHTML= `<span>
+    <i class="fa-regular fa-pen-to-square"></i>
+    <p>Mode edition</p>
+    </span>`;
+    headerAnchor.prepend(modHeaderBand); // Definit comme premier-ne de header
+    
+    // Affiche le bouton modifier
+    let folioAnchor = document.querySelector("#portfolio");
+    let folioTextBox = document.createElement('div') // une boite pour rassembler le text sur une meme ligne
+    let folioTitle = document.querySelector('#portfolio h2');
+    let modifButton = document.createElement('div');
+    folioAnchor.prepend(folioTextBox); // La boite en premier enfant de portfolio
+    folioTextBox.appendChild(folioTitle);
+    folioTextBox.appendChild(modifButton);
+   
+    modifButton.innerHTML += `<span>
+    <i class="fa-regular fa-pen-to-square"></i>
+    <p>modifier</p>
+    </span>`
+
+    // Fait disparaitre les filtres
+    filterBox.classList.toggle("invisible");
+}
+
+
+let modale = function() { // affiche la fenetre modale au click de modifier
+
+};
 
 
 /// LOGINPAGE ///
@@ -116,13 +143,7 @@ const loginURL = 'http://localhost:5678/api/users/login'; // L'URL de swagger
 const loginButton = document.querySelector(".loginBox button"); // Mon bouton "se connecter"
 
 
-let adminMod = function() {
-    let modifButton = document.querySelector("#portfolio");
-    modifButton.innerHTML += `<span>
-    <i class="fa-regular fa-pen-to-square"></i>
-    <p>modifier</p>
-    </span>`
-};
+
 
 let extractDataForm = function() { // Return les valeurs du formulaire directement dans le bon format.
 
@@ -155,8 +176,9 @@ let extractDataForm = function() { // Return les valeurs du formulaire directeme
 
         } else {
             
-            // adminMod() // -> Pas glop -> rend inactif les boutons filtres. 
-            // Je peux essayer d'utiliser appendchild et createHtmlElement plutot que innerHTML.
+            // modale() & adminMod()
+            adminMod()
+
             homePage.classList.toggle("invisible");
             loginPage.classList.toggle("invisible");
             return pouniette.json();  // On convertit la reponse en format JSON pour l'exploiter 

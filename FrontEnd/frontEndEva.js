@@ -1,6 +1,7 @@
 // HOMEPAGE //
 // Recuperation DATA
 
+
 let getWorks = async function() {
     const response = await fetch('http://localhost:5678/api/works');
     const works = await response.json();
@@ -14,6 +15,12 @@ let getFilters = async function() {
     return filters
 }
 let filters = await getFilters()
+
+
+
+let delworkUrl = 'http://localhost:5678/api/works/{id}'
+let newWorkUrl = 'http://localhost:5678/api/works'
+
 // Recuperation DATA\  
 
 // Affichage des Filtres
@@ -141,14 +148,39 @@ let modGallery = document.querySelector(".modGallery")
 let modale = function() {    // fait apparaitre la modale
     bodyAnchor.insertBefore(modalePage,modHeaderBand); // pour position absolute
     bodyAnchor.insertBefore(modaleBox,modHeaderBand); // pour position absolute
-    modalePage.classList.toggle("invisible"); 
+    modalePage.classList.toggle("invisible");
     for(let work of works) { 
         modGallery.innerHTML += `<figure>
         <img src="${work.imageUrl}" alt="${work.title}">
+        <div>
         <i class="fa-solid fa-trash-can"></i>
-        </figure>`
+        </div>
+        </figure>`        
+    }
+
+    let corbeilles = document.querySelectorAll(".modGallery figure div"); //NodeList
+    let i = 1
+    for (let corbeille of corbeilles) {    
+        corbeille.setAttribute("id", i);
+        i++
+        corbeille.addEventListener("click", event => {
+            console.log(corbeille.id);
+            delWork(corbeille.id)
+        });
+
     }
     };
+
+let delWork = async function(id) { // Delete selon l'id renseigne en argument.
+
+    const response = await fetch(`http://localhost:5678/api/works/${id}`, {
+        method: 'DELETE',
+        headers: {
+            'Authorization': 'Bearer ' + userToken,
+            'Accept': '*/*'
+        }
+    });
+};
 
 
 modifButton.addEventListener("click", event => {
@@ -214,12 +246,15 @@ let extractDataForm = function() { // Return les valeurs du formulaire directeme
     })
     .then((json) => { // Recuperation du token -> Objet userId ; token
         let userToken = json
-        console.log(json);            
+        localStorage.setItem('userToken', userToken.token); // Je n'arrive toukours pas a exploiter le token en dehors de sa portee locale.
+        console.log(localStorage.getItem('userToken'))
+        console.log(json.token);            
     })
 
 });
 
-
+let userToken = localStorage.getItem('userToken');
+console.log(userToken.token);
 // / LOGINPAGE ///
 // / LOGINPAGE ///
 // / LOGINPAGE ///

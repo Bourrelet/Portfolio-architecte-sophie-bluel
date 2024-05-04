@@ -307,4 +307,9 @@ footer nav ul {
 	border-radius: 2px;
    }
 
+
+   .modaleBox nav {
+	justify-content: space-between;
+   }
+
 /* Modif Par Eva */

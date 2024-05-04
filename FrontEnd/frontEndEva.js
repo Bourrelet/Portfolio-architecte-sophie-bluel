@@ -149,6 +149,7 @@ let modale = function() {    // fait apparaitre la modale
     bodyAnchor.insertBefore(modalePage,modHeaderBand); // pour position absolute
     bodyAnchor.insertBefore(modaleBox,modHeaderBand); // pour position absolute
     modalePage.classList.toggle("invisible");
+    // modaleBox.classList.toggle("invisible");
     for(let work of works) { 
         modGallery.innerHTML += `<figure>
         <img src="${work.imageUrl}" alt="${work.title}">
@@ -157,7 +158,6 @@ let modale = function() {    // fait apparaitre la modale
         </div>
         </figure>`        
     }
-
     let corbeilles = document.querySelectorAll(".modGallery figure div"); //NodeList
     let i = 1
     for (let corbeille of corbeilles) {    
@@ -167,12 +167,19 @@ let modale = function() {    // fait apparaitre la modale
             console.log(corbeille.id);
             delWork(corbeille.id)
         });
-
     }
-    };
+    let crossButton = document.querySelector(".modaleBox nav i:nth-of-type(2)"); // Ferme la modale
+        crossButton.addEventListener("click", event => {
+            modaleBox.classList.toggle("invisible");
+            modalePage.classList.toggle("invisible");
+            
+        });
+    
+};
 
 let delWork = async function(id) { // Delete selon l'id renseigne en argument.
-
+    let userToken = localStorage.getItem('userToken');
+    console.log(`usertoken -> ${userToken}`);
     const response = await fetch(`http://localhost:5678/api/works/${id}`, {
         method: 'DELETE',
         headers: {
@@ -181,7 +188,6 @@ let delWork = async function(id) { // Delete selon l'id renseigne en argument.
         }
     });
 };
-
 
 modifButton.addEventListener("click", event => {
     modale();
@@ -246,15 +252,13 @@ let extractDataForm = function() { // Return les valeurs du formulaire directeme
     })
     .then((json) => { // Recuperation du token -> Objet userId ; token
         let userToken = json
-        localStorage.setItem('userToken', userToken.token); // Je n'arrive toukours pas a exploiter le token en dehors de sa portee locale.
-        console.log(localStorage.getItem('userToken'))
-        console.log(json.token);            
+        localStorage.setItem('userToken', userToken.token); // Je n'arrive toukours pas a exploiter le token en dehors de sa portee locale.           
     })
 
 });
 
 let userToken = localStorage.getItem('userToken');
-console.log(userToken.token);
+console.log(`usertoken -> ${userToken.token}`);
 // / LOGINPAGE ///
 // / LOGINPAGE ///
 // / LOGINPAGE ///

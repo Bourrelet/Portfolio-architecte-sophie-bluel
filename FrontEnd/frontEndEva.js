@@ -136,14 +136,20 @@ let modalePage = document.querySelector("#modalePage");
 modalePage.classList.add("modalePage");
 let modaleBox = document.querySelector(".modaleBox")
 let originalHeader = document.querySelector('header:not([class])');
+let modGallery = document.querySelector(".modGallery")
 
-let modale = function() {    
-    console.log("modale en cours");
-    bodyAnchor.insertBefore(modalePage,modHeaderBand);
-    bodyAnchor.insertBefore(modaleBox,modHeaderBand);
+let modale = function() {    // fait apparaitre la modale
+    bodyAnchor.insertBefore(modalePage,modHeaderBand); // pour position absolute
+    bodyAnchor.insertBefore(modaleBox,modHeaderBand); // pour position absolute
     modalePage.classList.toggle("invisible"); 
-    console.log("toggle invisibilite");
+    for(let work of works) { 
+        modGallery.innerHTML += `<figure>
+        <img src="${work.imageUrl}" alt="${work.title}">
+        <i class="fa-solid fa-trash-can"></i>
+        </figure>`
+    }
     };
+
 
 modifButton.addEventListener("click", event => {
     modale();

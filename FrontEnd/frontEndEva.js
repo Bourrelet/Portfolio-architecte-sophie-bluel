@@ -100,45 +100,56 @@ logButt.addEventListener("click", event => {
 // Changement de page au click de login //
 
 
+let bodyAnchor = document.querySelector("body");
+let modHeaderBand = document.createElement('header');
+
+// let folioAnchor = document.querySelector("#portfolio");
+let folioTextBox = document.createElement('div') // une boite pour rassembler le text sur une meme ligne
+let folioTitle = document.querySelector('#portfolio h2');
+let modifButton = document.createElement('div');
+
 let adminMod = function() { 
     // affiche le bandeau noir
-    let headerAnchor = document.querySelector("body");
-    let modHeaderBand = document.createElement('header');
-    modHeaderBand.innerHTML= `<span>
-    <i class="fa-regular fa-pen-to-square"></i>
-    <p>Mode edition</p>
-    </span>`;
-    headerAnchor.prepend(modHeaderBand); // Definit comme premier-ne de header
+
+    modHeaderBand.innerHTML= `<i class="fa-regular fa-pen-to-square"></i> <p>Mode edition</p>`;
+    bodyAnchor.prepend(modHeaderBand); // Definit comme premier-ne de header
+    modHeaderBand.classList.add("rowBox");
+    modHeaderBand.classList.add("modHeaderBand");
     // Je dois aussi changer login en logout
     
     // Affiche le bouton modifier
-    let folioAnchor = document.querySelector("#portfolio");
-    let folioTextBox = document.createElement('div') // une boite pour rassembler le text sur une meme ligne
-    let folioTitle = document.querySelector('#portfolio h2');
-    let modifButton = document.createElement('div');
+
     folioAnchor.prepend(folioTextBox); // La boite en premier enfant de portfolio
     folioTextBox.appendChild(folioTitle);
     folioTextBox.appendChild(modifButton);
+    folioTextBox.classList.add("rowBox");
+    modifButton.classList.add("rowBox");
+    modifButton.classList.add("modifButton");
+    modifButton.classList.add("anyButton");
    
-    modifButton.innerHTML += `<span>
-    <i class="fa-regular fa-pen-to-square"></i>
-    <p>modifier</p>
-    </span>`
+    modifButton.innerHTML += `<i class="fa-regular fa-pen-to-square"></i> <p>modifier</p>`
 
     // Fait disparaitre les filtres
     filterBox.classList.toggle("invisible");
 }
+let modalePage = document.querySelector("#modalePage");
+modalePage.classList.add("modalePage");
+let modaleBox = document.querySelector(".modaleBox")
+let originalHeader = document.querySelector('header:not([class])');
+
+let modale = function() {    
+    console.log("modale en cours");
+    bodyAnchor.insertBefore(modalePage,modHeaderBand);
+    bodyAnchor.insertBefore(modaleBox,modHeaderBand);
+    modalePage.classList.toggle("invisible"); 
+    console.log("toggle invisibilite");
+    };
+
+modifButton.addEventListener("click", event => {
+    modale();
+});
 
 
-let modale = function() { // affiche la fenetre modale au click de modifier
-    // Je dois griser header main et footer
-    // Je peux creer un span geant avec un index superieur et en position absolute  avec background
-    // je le met en enfant direct de headerMod
-    // Je lui cree une div enfant qui contient ma modale, en position relative.
-    // Dans la modale je vais fetch work, et seulement apres je rajouterai a l'interieur la corbeille
-    // 
-
-};
 
 
 /// LOGINPAGE ///
@@ -191,7 +202,7 @@ let extractDataForm = function() { // Return les valeurs du formulaire directeme
             homePage.classList.toggle("invisible");
             loginPage.classList.toggle("invisible");
             
-            return pouniette.json()``;  // On convertit la reponse en format JSON pour l'exploiter 
+            return pouniette.json();  // On convertit la reponse en format JSON pour l'exploiter 
 
         }
     })

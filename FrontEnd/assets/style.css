@@ -227,12 +227,53 @@ footer nav ul {
 	position: absolute;
 	z-index: 500;
 	background-color: rgba(0, 0, 0, 0.3);
+	width: 1440px;
+	height: 3326px;
 }
 
-.modalebOX {
-	position: relative;
+.modaleBox {
+	position: absolute;
 	z-index: 750;
+	width: 630px;
+	height: 688px;
+	margin: 0 auto;
+	background-color: white;
+	top: 601px;
+	left: 405px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	text-align: center;
 	
+}
+.modifButton {
+	text-align: center;
+	z-index: 200;
+	border: 2px solid black;
+	border-radius: 25%;
+	padding: 5px;
+	margin-left: 25px;
+	background-color: rgba(15, 15, 15, 0.3);
+}
+
+.rowBox {
+	display: flex;
+}
+
+.modHeaderBand {
+	position: relative;
+	z-index: 400;
+	text-align: center;
+	color: white;
+	background-color: black;
+	height: 59px;
+	display: flex;
+	justify-content: center;
+	margin: 0px;
+}
+
+.anyButton:hover {
+	cursor: pointer;
 }
 
 /* Modif Par Eva */

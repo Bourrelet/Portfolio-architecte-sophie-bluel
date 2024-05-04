@@ -1,5 +1,6 @@
 // HOMEPAGE //
 // Recuperation DATA
+
 let getWorks = async function() {
     const response = await fetch('http://localhost:5678/api/works');
     const works = await response.json();
@@ -101,13 +102,14 @@ logButt.addEventListener("click", event => {
 
 let adminMod = function() { 
     // affiche le bandeau noir
-    let headerAnchor = document.querySelector("header");
-    let modHeaderBand = document.createElement('div');
+    let headerAnchor = document.querySelector("body");
+    let modHeaderBand = document.createElement('header');
     modHeaderBand.innerHTML= `<span>
     <i class="fa-regular fa-pen-to-square"></i>
     <p>Mode edition</p>
     </span>`;
     headerAnchor.prepend(modHeaderBand); // Definit comme premier-ne de header
+    // Je dois aussi changer login en logout
     
     // Affiche le bouton modifier
     let folioAnchor = document.querySelector("#portfolio");
@@ -129,6 +131,12 @@ let adminMod = function() {
 
 
 let modale = function() { // affiche la fenetre modale au click de modifier
+    // Je dois griser header main et footer
+    // Je peux creer un span geant avec un index superieur et en position absolute  avec background
+    // je le met en enfant direct de headerMod
+    // Je lui cree une div enfant qui contient ma modale, en position relative.
+    // Dans la modale je vais fetch work, et seulement apres je rajouterai a l'interieur la corbeille
+    // 
 
 };
 
@@ -167,8 +175,9 @@ let extractDataForm = function() { // Return les valeurs du formulaire directeme
     });
 
     postLogin // Comment arrive-t-on a recuperer la reponse et le json juste avec des .then ?? Cmt ca marche??
-    .then((pouniette) => { // La reponse 'serveur';
-        console.log(pouniette.status) // 200 401
+    .then((pouniette) => { // La reponse 'serveur'; Objet de type response
+        // console.log(pouniette.status) // 200 401
+        console.log(pouniette);
 
         if(!pouniette.ok) {
 
@@ -181,12 +190,14 @@ let extractDataForm = function() { // Return les valeurs du formulaire directeme
 
             homePage.classList.toggle("invisible");
             loginPage.classList.toggle("invisible");
-            return pouniette.json();  // On convertit la reponse en format JSON pour l'exploiter 
+            
+            return pouniette.json()``;  // On convertit la reponse en format JSON pour l'exploiter 
 
         }
     })
     .then((json) => { // Recuperation du token -> Objet userId ; token
-        let userToken = json              
+        let userToken = json
+        console.log(json);            
     })
 
 });

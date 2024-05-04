@@ -223,5 +223,16 @@ footer nav ul {
 	text-align: left;
 }
 
+.modalePage {
+	position: absolute;
+	z-index: 500;
+	background-color: rgba(0, 0, 0, 0.3);
+}
+
+.modalebOX {
+	position: relative;
+	z-index: 750;
+	
+}
 
 /* Modif Par Eva */

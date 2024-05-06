@@ -134,7 +134,7 @@ let adminMod = function() {
     modifButton.classList.add("modifButton");
     modifButton.classList.add("anyButton");
    
-    modifButton.innerHTML += `<i class="fa-regular fa-pen-to-square"></i> <p>modifier</p>`
+    modifButton.innerHTML = `<i class="fa-regular fa-pen-to-square"></i> <p>modifier</p>`
 
     // Fait disparaitre les filtres
     filterBox.classList.toggle("invisible");
@@ -147,7 +147,8 @@ let modGallery = document.querySelector(".modGallery")
 
 let modale = function() {    // fait apparaitre la modale
     bodyAnchor.insertBefore(modalePage,modHeaderBand); // pour position absolute
-    bodyAnchor.insertBefore(modaleBox,modHeaderBand); // pour position absolute
+    // bodyAnchor.insertBefore(modaleBox,modHeaderBand); // pour position absolute
+    modalePage.appendChild(modaleBox);
     modalePage.classList.toggle("invisible");
     // modaleBox.classList.toggle("invisible");
     for(let work of works) { 
@@ -168,14 +169,25 @@ let modale = function() {    // fait apparaitre la modale
             delWork(corbeille.id)
         });
     }
-    let crossButton = document.querySelector(".modaleBox nav i:nth-of-type(2)"); // Ferme la modale
-        crossButton.addEventListener("click", event => {
-            modaleBox.classList.toggle("invisible");
-            modalePage.classList.toggle("invisible");
-            
-        });
-    
+
 };
+
+let crossButton = document.querySelectorAll(".modaleBox .fa-xmark"); // Ferme la modale 
+for(let cross of crossButton) {
+    cross.addEventListener("click", event => {
+        modale1.classList.remove("invisible");
+        modale2.classList.add("invisible");
+        modalePage.classList.toggle("invisible");
+
+    
+        for(let work of works) { 
+            modGallery.innerHTML = ""; // reset affichage gallerie modale
+        }
+        
+    });
+}
+
+
 
 let delWork = async function(id) { // Delete selon l'id renseigne en argument.
     let userToken = localStorage.getItem('userToken');
@@ -192,8 +204,26 @@ let delWork = async function(id) { // Delete selon l'id renseigne en argument.
 modifButton.addEventListener("click", event => {
     modale();
 });
+let modale1 = document.querySelector(".modale1")
+let modale2 = document.querySelector(".modale2")
+let modale1Button = document.querySelector(".modale1 button");
+modale1Button.addEventListener("click", event => {
+    modale1.classList.toggle("invisible");
+    modale2.classList.toggle("invisible"); 
+
+let select = document.querySelector("#inputCategory");
+for(let i = 0; i < filters.length; i++) {
+    let option = document.createElement('option');
+    select.appendChild(option); 
+    option.setAttribute('value', filters[i].id);
+    option.innerText = filters[i].name;       
+}
 
 
+
+
+});
+// {/* <option value="valeurOption1">Option 1</option> */}
 
 
 /// LOGINPAGE ///
@@ -262,3 +292,9 @@ console.log(`usertoken -> ${userToken.token}`);
 // / LOGINPAGE ///
 // / LOGINPAGE ///
 // / LOGINPAGE ///
+
+// Ne pas oublier de corriger modifbutton, qui se duplique
+// Changer login en logout + son comportement.
+
+// En fait, envoyer une requete en exploitant FormData, ca doit pouvoir marcher, il faut juste convertir le truc en JSON ...
+// ID pour associer le label et l'input ; name pour l'iddentification de la clef par l'API

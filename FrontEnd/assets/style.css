@@ -232,7 +232,7 @@ footer nav ul {
 }
 
 .modaleBox {
-	position: absolute;
+	position: relative;
 	z-index: 750;
 	width: 630px;
 	height: 688px;

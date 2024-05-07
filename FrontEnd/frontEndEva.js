@@ -204,13 +204,15 @@ let delWork = async function(id) { // Delete selon l'id renseigne en argument.
 modifButton.addEventListener("click", event => {
     modale();
 });
+
+// Passage d'une modale a l'autre
 let modale1 = document.querySelector(".modale1")
 let modale2 = document.querySelector(".modale2")
 let modale1Button = document.querySelector(".modale1 button");
 modale1Button.addEventListener("click", event => {
     modale1.classList.toggle("invisible");
     modale2.classList.toggle("invisible"); 
-
+// Affichage des options de categories
 let select = document.querySelector("#inputCategory");
 for(let i = 0; i < filters.length; i++) {
     let option = document.createElement('option');
@@ -218,12 +220,22 @@ for(let i = 0; i < filters.length; i++) {
     option.setAttribute('value', filters[i].id);
     option.innerText = filters[i].name;       
 }
+select.selectedIndex = -1;
+// Il faut qu'une fois que l'utilisateur renseigne sa photo, elle s'affiche a la place de la div inputfile
+// Je dois reprendre mon HTML pour que ca se comporte comme sur la maquette.
+});
 
+//Modale2 -> fetch new image)
+let modale2Button = document.querySelector(".modale2 button");
+modale2Button.addEventListener("click", event => {
 
-
+// On va tenter le formData PQ ya plein de fichiers de differents types.
+// Je dois faire le bouton retour aussi
+// Normalement, si la reponse est acceptee, works se mettera a jour. A moins que je doive le relancer moi meme.
 
 });
-// {/* <option value="valeurOption1">Option 1</option> */}
+//Modale2 -> fetch new image)
+
 
 
 /// LOGINPAGE ///

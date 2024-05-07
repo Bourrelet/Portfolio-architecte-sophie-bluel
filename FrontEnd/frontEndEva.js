@@ -5,6 +5,7 @@
 let getWorks = async function() {
     const response = await fetch('http://localhost:5678/api/works');
     const works = await response.json();
+    console.log("getting works");
     return works
 }
 let works = await getWorks() 
@@ -54,6 +55,18 @@ displayFilters()
 
 // filtrage
 let gallerie = document.querySelector(".gallery");
+
+let displayGallerie = async function() {
+    gallerie.innerHTML = "";
+    let works = await getWorks();
+    console.log('Lancement displayGallerie')
+    for(let work of works) { 
+        gallerie.innerHTML += `<figure>
+        <img src="${work.imageUrl}" alt="${work.title}">
+        <figcaption>${work.title}</figcaption>
+        </figure>`
+    }
+};
 
 // Fonctions Filtrage
 let initWork = function() { 
@@ -145,13 +158,12 @@ let modaleBox = document.querySelector(".modaleBox")
 let originalHeader = document.querySelector('header:not([class])');
 let modGallery = document.querySelector(".modGallery")
 
-let modale = function() {    // fait apparaitre la modale
-    bodyAnchor.insertBefore(modalePage,modHeaderBand); // pour position absolute
-    // bodyAnchor.insertBefore(modaleBox,modHeaderBand); // pour position absolute
-    modalePage.appendChild(modaleBox);
-    modalePage.classList.toggle("invisible");
-    // modaleBox.classList.toggle("invisible");
-    for(let work of works) { 
+
+let displayModGallery = async function() {
+    modGallery.innerHTML = "";
+    let works = await getWorks();
+    console.log('Lancement displayModGallery')
+    for(let work of works) { // rempli la gallerie de modale1
         modGallery.innerHTML += `<figure>
         <img src="${work.imageUrl}" alt="${work.title}">
         <div>
@@ -164,30 +176,28 @@ let modale = function() {    // fait apparaitre la modale
     for (let corbeille of corbeilles) {    
         corbeille.setAttribute("id", i);
         i++
-        corbeille.addEventListener("click", event => {
+        corbeille.addEventListener("click", event => { // Permet aux corbeilles de lancer delwork
             console.log(corbeille.id);
-            delWork(corbeille.id)
+            delWork(corbeille.id) // lance la fonction delWork
         });
     }
+};// Fonctionne avec les works de la BD, mais pas avec ceux que je cree
+// -> Ca plante surement car l'id de corbeille n'est pas le bon
+// Je devrais verifier mon formdata de creation avec 
+// for (let pair of formData.entries()) {
+//     console.log(pair[0] + ': ' + pair[1]);
+// }
+// Sinon je dois trouver un moyen plus fiable d'attribuer a corbeille directement le meme id que work.
+// Regarder mon cours sur les methodes iteratives, ya pe moyen de moyenner.
 
+
+
+let modale = function() {    // fait apparaitre la modale
+    bodyAnchor.insertBefore(modalePage,modHeaderBand); // pour position absolute
+    modalePage.appendChild(modaleBox);
+    modalePage.classList.toggle("invisible");
+    displayModGallery();
 };
-
-let crossButton = document.querySelectorAll(".modaleBox .fa-xmark"); // Ferme la modale 
-for(let cross of crossButton) {
-    cross.addEventListener("click", event => {
-        modale1.classList.remove("invisible");
-        modale2.classList.add("invisible");
-        modalePage.classList.toggle("invisible");
-
-    
-        for(let work of works) { 
-            modGallery.innerHTML = ""; // reset affichage gallerie modale
-        }
-        
-    });
-}
-
-
 
 let delWork = async function(id) { // Delete selon l'id renseigne en argument.
     let userToken = localStorage.getItem('userToken');
@@ -198,8 +208,33 @@ let delWork = async function(id) { // Delete selon l'id renseigne en argument.
             'Authorization': 'Bearer ' + userToken,
             'Accept': '*/*'
         }
-    });
+    })
+    .then(response => {
+        if(!response.ok){
+            throw new Error("Probleme corbeille");
+                
+            } else {
+                console.log("Suppression reussie?" + response.status);
+                displayModGallery();
+
+            }
+    })
 };
+
+
+let crossButton = document.querySelectorAll(".modaleBox .fa-xmark"); // Ferme la modale 
+for(let cross of crossButton) {
+    cross.addEventListener("click", event => {
+        modale1.classList.remove("invisible");
+        modale2.classList.add("invisible");
+        modalePage.classList.toggle("invisible");
+        displayModGallery()
+        displayGallerie();       
+    });
+}
+
+
+
 
 modifButton.addEventListener("click", event => {
     modale();
@@ -226,14 +261,41 @@ select.selectedIndex = -1;
 });
 
 //Modale2 -> fetch new image)
+
 let modale2Button = document.querySelector(".modale2 button");
 modale2Button.addEventListener("click", event => {
+    let userToken = localStorage.getItem('userToken');
+    let modale2Form = document.querySelector(".modale2 form");
+    let formData2 = new FormData(modale2Form);
+    console.log(formData2);
+    const response = fetch('http://localhost:5678/api/works', {
+        method: 'POST',
+        headers: {
+            'Authorization': 'Bearer ' + userToken
+        },
+        body: formData2
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error("Echec de la requete HTTP");
+        } else {
+            modale1.classList.remove("invisible");
+            modale2.classList.add("invisible");
+            modalePage.classList.toggle("invisible");
+            displayModGallery();
+            displayGallerie();
+        }
+        return response.json();
+    })
+    // .then(data => {
+    //     // Traitez la réponse de l'API ici
+    // })
+    });
 
 // On va tenter le formData PQ ya plein de fichiers de differents types.
 // Je dois faire le bouton retour aussi
 // Normalement, si la reponse est acceptee, works se mettera a jour. A moins que je doive le relancer moi meme.
 
-});
 //Modale2 -> fetch new image)
 
 

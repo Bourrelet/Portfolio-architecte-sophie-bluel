@@ -102,7 +102,7 @@ for (let button of buttonList){ // button prend les valeurs de la NodeList
 const homePage = document.querySelector("#homePage");
 const loginPage = document.querySelector("#loginPage");
 const logButt = document.querySelector("#logButton");
-logButt.addEventListener("click", event => {
+logButt.addEventListener("click", () => {
     homePage.classList.toggle("invisible");
     loginPage.classList.toggle("invisible");    
 })
@@ -163,15 +163,25 @@ let displayModGallery = async function() {
         </div>
         </figure>`
 
-        // Ci-dessous, le selecteur avance permet de target la corbeille actuelle dans la boucle.
-        let corbeille = document.querySelector(".modGallery figure:last-of-type div"); 
-        corbeille.setAttribute("id", `${work.id}`); // On lui donne l'id du work actuel
-        corbeille.addEventListener("click", () => { // Permet a la corbeille de lancer delwork
-            console.log(corbeille.id);
-            delWork(corbeille.id); // la corbeille lance delwork avec son id (identique work.id)
-        })   
+        // Ci-dessous, le selecteur permet de target la corbeille (localBin) actuelle dans la boucle.
+        let localBin = document.querySelector(".modGallery figure:last-of-type div"); 
+        localBin.setAttribute("id", `${work.id}`); // On lui donne un id identique a celui du work actuel de la boucle. 
     }
+
+    let corbeilles = document.querySelectorAll(".modGallery figure div"); // On def le comportement des corbeilles.
+    for (let corbeille of corbeilles) {
+        console.log(corbeille);
+        corbeille.addEventListener("click", () => { 
+            delWork(corbeille.id); // la corbeille lance delWork() avec son id comme argument.
+        });
+}
 };
+
+
+
+
+
+
 // Affiche la galerie fonctionnelle de modale1 (images et corbeilles)
 // Affiche la galerie fonctionnelle de modale1 (images et corbeilles)
 
@@ -202,7 +212,7 @@ let delWork = async function(id) { // Delete selon l'id (de la corbeille)renseig
 
 // ouverture et fermeture de la modale
 // ouverture et fermeture de la modale
-let modale = function() {    // fait apparaitre la modale
+let openModale = function() {    // fait apparaitre la modale
     bodyAnchor.insertBefore(modalePage,modHeaderBand); // pour position absolute
     modalePage.appendChild(modaleBox);
     modalePage.classList.toggle("invisible");
@@ -210,19 +220,36 @@ let modale = function() {    // fait apparaitre la modale
 };
 
 modifButton.addEventListener("click", ()=> {
-    modale();
+    openModale();
 });
+
+let closeModale = function(){
+    console.log("closing modale")
+    modale1.classList.remove("invisible");
+    modale2.classList.add("invisible");
+    modalePage.classList.toggle("invisible");
+    displayGallerie();   
+};
+
+modaleBox.addEventListener("click", (event) => { // Pour la boite soit click-proof.
+    event.stopPropagation(); // Empeche la propagation de l'event aux enfants et aux parents ...
+    // sinon quand je clique sur la boite ca ferme modalePage.
+});
+
 
 let crossButton = document.querySelectorAll(".modaleBox .fa-xmark"); // Ferme la modale 
 for(let cross of crossButton) {
-    cross.addEventListener("click", () => {
-        modale1.classList.remove("invisible");
-        modale2.classList.add("invisible");
-        modalePage.classList.toggle("invisible");
-        // displayModGallery() //affichage lors de l'execution de modale()
-        displayGallerie();       
+    cross.addEventListener("click", (event) => {
+        // event.stopPropagation(); // C'est feerique 
+        console.log("crossButton clicked");
+        closeModale();    
     });
 }
+modalePage.addEventListener("click", (event) => {
+    // event.stopPropagation(); // C'est magique
+    console.log("modalePage clicked");
+    closeModale();     
+});
 // ouverture et fermeture de la modale
 // ouverture et fermeture de la modale
 
@@ -234,7 +261,9 @@ let modale1 = document.querySelector(".modale1")
 let modale2 = document.querySelector(".modale2")
 let modale1Button = document.querySelector(".modale1 button");
 
-modale1Button.addEventListener("click", () => {
+modale1Button.addEventListener("click", (event) => {
+    // event.stopPropagation();
+
     modale1.classList.toggle("invisible");
     modale2.classList.toggle("invisible"); 
 });
@@ -244,7 +273,8 @@ modale1Button.addEventListener("click", () => {
 
 //Contenu dynamique de la balise select
 //Contenu dynamique de la balise select
-let select = document.querySelector("#inputCategory");
+// je pourrais mettre tout ca dans une fonction,et l'appeler directement apres la creation de la balise select mais bon ...
+let select = document.querySelector("#inputCategory"); 
 for(let i = 0; i < filters.length; i++) {
     let option = document.createElement('option');
     select.appendChild(option); 
@@ -252,13 +282,16 @@ for(let i = 0; i < filters.length; i++) {
     option.innerText = filters[i].name; // l'option affichee est le nom de la categorie     
 }
 select.selectedIndex = -1;
+// je pourrais mettre tout ca dans une fonction,et l'appeler directement apres la creation de la balise select mais bon ...
 //Contenu dynamique de la balise select
 //Contenu dynamique de la balise select
 
 //Modale2 -> fetch new image)
 //Modale2 -> fetch new image)
 let modale2Button = document.querySelector(".modale2 button");
-modale2Button.addEventListener("click", event => {
+modale2Button.addEventListener("click", (event) => {
+    // event.stopPropagation()
+
     let userToken = localStorage.getItem('userToken');
     let modale2Form = document.querySelector(".modale2 form");
     let formData2 = new FormData(modale2Form);
@@ -273,19 +306,17 @@ modale2Button.addEventListener("click", event => {
     .then(response => {
         if (!response.ok) {
             throw new Error("Echec de la requete HTTP");
-        } else {
+        } else { // module l'affichage et refresh les galleries.
             modale1.classList.remove("invisible");
             modale2.classList.add("invisible");
             modalePage.classList.toggle("invisible");
             displayModGallery();
             displayGallerie();
         }
-        return response.json();
+        return response.json(); // Pas forcement besoin du return; On le laisse la en attendant.
     })
-    // .then(data => {
-    //     // Traitez la réponse de l'API ici
-    // })
-    });
+
+});
 //Modale2 -> fetch new image)
 //Modale2 -> fetch new image)
 
@@ -304,12 +335,13 @@ let extractDataForm = function() { // Return les valeurs du formulaire directeme
      "email": "${emailInput.value}",
      "password": "${passwordInput.value}"
    }`
- } // C'est un peu hardcode mais bon ... c'est plus simple comme ca.
-   // J'avais pas envie de convertir un objet FormData en JSON ... 
+// C'est un peu hardcodey mais bon ... c'est plus simple comme ca.
+// J'avais pas envie de convertir un objet FormData en JSON ... 
+ }
 
  loginButton.addEventListener("click", event => {  // Connexion si click
 
-    event.preventDefault();
+    event.preventDefault(); // pas de rechargement
 
     let postLogin = fetch(loginURL, { 
         method: "POST",
@@ -326,19 +358,20 @@ let extractDataForm = function() { // Return les valeurs du formulaire directeme
             return pouniette.json();  // On convertit la reponse en format JSON pour l'exploiter 
         }
     })
-    .then((json) => { // json provient du return precedent Recuperation du token -> Objet userId ; token
+    .then((json) => { // json provient du return precedent ; -> Objet userId ; token
         let userToken = json
         localStorage.setItem('userToken', userToken.token); 
     })
 });
 // Gestion du login //
-// Gestion du login //
+// Gestion du login // 
 
 // Changer login en logout + son comportement.
 // Reset les valeurs du formulaire apres la requete d'ajout de photo
 // Je dois faire le bouton retour aussi
 // Il faut que la modale se ferme si je clique en dehors aussi.
+    // Il faut que je passe mon event de cloture en fonction. Et que je l'appelle sur le click de la pagegrise
 
 // Il faut qu'une fois que l'utilisateur renseigne sa photo, elle s'affiche a la place de la div inputfile
 // Je dois reprendre mon HTML pour que ca se comporte comme sur la maquette.
-
+// Seule ma derniere corbeille fonctionne.

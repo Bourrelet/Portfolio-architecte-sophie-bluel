@@ -1,10 +1,11 @@
 // HOMEPAGE //
+
 // Recuperation DATA
-
-
+// Recuperation DATA
 let getWorks = async function() {
     const response = await fetch('http://localhost:5678/api/works');
     const works = await response.json();
+    console.log("getting works");
     return works
 }
 let works = await getWorks() 
@@ -15,65 +16,63 @@ let getFilters = async function() {
     return filters
 }
 let filters = await getFilters()
+// Recuperation DATA
+// Recuperation DATA
+
+// Display gallerie
+// Display gallerie
+let gallerie = document.querySelector(".gallery");
+let displayGallerie = async function() {
+    gallerie.innerHTML = "";
+    let works = await getWorks();
+    console.log('Lancement displayGallerie')
+    for(let work of works) { 
+        gallerie.innerHTML += `<figure>
+        <img src="${work.imageUrl}" alt="${work.title}">
+        <figcaption>${work.title}</figcaption>
+        </figure>`
+    }
+};
+window.addEventListener("load",(displayGallerie())); // Au chargement de la page
+// Display gallerie
+// Display gallerie
 
 
-
-let delworkUrl = 'http://localhost:5678/api/works/{id}'
-let newWorkUrl = 'http://localhost:5678/api/works'
-
-// Recuperation DATA\  
-
-// Affichage des Filtres
-// DOM Anchor and filter Box
+// Integration dynamique des filtres
+// Integration dynamique des filtres
 let folioAnchor = document.querySelector("#portfolio");
 let gallerieGrid = document.querySelector('.gallery')
 let filterBox = document.createElement('div');
 folioAnchor.insertBefore(filterBox, gallerieGrid); // Insertion des filtres juste avant la gallerie 
 
-// Bouton Tous Filter Display
-let tousButton = document.createElement('div'); 
+let tousButton = document.createElement('div'); // Bouton Tous Filter Display
 filterBox.appendChild(tousButton);
 tousButton.innerText = "Tous";
 tousButton.id = 0; 
 tousButton.classList.add("filterButton");
 
-// Dynamic Filters Display
-let displayFilters = function() {
-
+let displayFilters = function() { // Dynamic Filters Display
    for(let i = 0; i < filters.length; i++) {
-        let filterTag = document.createElement('div');
+        let filterTag = document.createElement('div'); // cree un bouton pour chaque filtre
         filterBox.appendChild(filterTag); 
         filterTag.innerText= filters[i].name;
-        filterTag.id = filters[i].id;   
+        filterTag.id = filters[i].id;   // attribue au bouton le meme id que son filtre
         filterTag.classList.add("filterButton");         
     }
     filterBox.classList.add("filterBox");
 }
 displayFilters()
-// Affichage des Filtres
+// Integration dynamique des filtres
+// Integration dynamique des filtres
 
-// filtrage
-let gallerie = document.querySelector(".gallery");
-
-// Fonctions Filtrage
-let initWork = function() { 
-    console.log('Lancement initWork')
-for(let work of works) { 
-    gallerie.innerHTML += `<figure>
-    <img src="${work.imageUrl}" alt="${work.title}">
-    <figcaption>${work.title}</figcaption>
-    </figure>`
-}}
-window.addEventListener("load",(initWork())); // Au chargement de la page
-
-//Filtrage par click
+//Boutons filtres
+//Boutons filtres
 let filtering = function(buttonArg){ // filtre les travaux en fonction du bouton clique
     console.log('filtrage en cours');
     gallerie.innerHTML = ""; // reset gallerie
-    if(buttonArg.id == 0 ){ // tous
-        initWork(); // Affiche toute la gallerie
-        console.log('Lancement initWork');
-    } else {         
+    if(buttonArg.id == 0 ){ // si "tous" est le bouton argument
+        displayGallerie(); // Affiche toute la gallerie
+    } else {        
         for(let work of works) {
             if(work.category.id == buttonArg.id){
                 console.log(`Categorie ${work.category.id} -> ${work.category.name}  button id -> ${buttonArg.id}`)
@@ -81,10 +80,10 @@ let filtering = function(buttonArg){ // filtre les travaux en fonction du bouton
                 <img src="${work.imageUrl}" alt="${work.title}">
                 <figcaption>${work.title}</figcaption>
                 </figure>`
-                    }
                 }
-    }
-}
+            }
+        }
+};
 let buttonList = document.querySelectorAll(".filterButton"); // Identifie le bouton clique et le passe en argument de filtering
 for (let button of buttonList){ // button prend les valeurs de la NodeList
     button.addEventListener("click", () => {
@@ -92,11 +91,14 @@ for (let button of buttonList){ // button prend les valeurs de la NodeList
         filtering(button)
     });
 }
+//Boutons filtres
+//Boutons filtres
 
 
 // HOMEPAGE //
 
-// Changement de page au click de login //
+// Affichage de la page login //
+// Affichage de la page login //
 const homePage = document.querySelector("#homePage");
 const loginPage = document.querySelector("#loginPage");
 const logButt = document.querySelector("#logButton");
@@ -104,92 +106,78 @@ logButt.addEventListener("click", event => {
     homePage.classList.toggle("invisible");
     loginPage.classList.toggle("invisible");    
 })
-// Changement de page au click de login //
+// Affichage de la page login //
+// Affichage de la page login //
 
-
+// Integration Dynamique admin Mod
+// Integration Dynamique admin Mod
 let bodyAnchor = document.querySelector("body");
 let modHeaderBand = document.createElement('header');
-
-// let folioAnchor = document.querySelector("#portfolio");
-let folioTextBox = document.createElement('div') // une boite pour rassembler le text sur une meme ligne
+let folioTextBox = document.createElement('div')
 let folioTitle = document.querySelector('#portfolio h2');
 let modifButton = document.createElement('div');
 
-let adminMod = function() { 
-    // affiche le bandeau noir
-
+let adminMod = function() {  // Je dois encore changer login en logout
     modHeaderBand.innerHTML= `<i class="fa-regular fa-pen-to-square"></i> <p>Mode edition</p>`;
     bodyAnchor.prepend(modHeaderBand); // Definit comme premier-ne de header
+
     modHeaderBand.classList.add("rowBox");
     modHeaderBand.classList.add("modHeaderBand");
-    // Je dois aussi changer login en logout
     
-    // Affiche le bouton modifier
-
-    folioAnchor.prepend(folioTextBox); // La boite en premier enfant de portfolio
+    folioAnchor.prepend(folioTextBox); // La boite txt en premier enfant de portfolio
     folioTextBox.appendChild(folioTitle);
-    folioTextBox.appendChild(modifButton);
+    folioTextBox.appendChild(modifButton); // Affiche le bouton modifier
+
     folioTextBox.classList.add("rowBox");
     modifButton.classList.add("rowBox");
     modifButton.classList.add("modifButton");
     modifButton.classList.add("anyButton");
-   
-    modifButton.innerHTML = `<i class="fa-regular fa-pen-to-square"></i> <p>modifier</p>`
 
-    // Fait disparaitre les filtres
-    filterBox.classList.toggle("invisible");
+    modifButton.innerHTML = `<i class="fa-regular fa-pen-to-square"></i> <p>modifier</p>`
+    filterBox.classList.toggle("invisible");     // Fait disparaitre les filtres
+    homePage.classList.toggle("invisible"); // disparition homepage
+    loginPage.classList.toggle("invisible"); // apparition loginpage
+    
 }
+// Integration Dynamique admin Mod
+// Integration Dynamique admin Mod
+
 let modalePage = document.querySelector("#modalePage");
-modalePage.classList.add("modalePage");
 let modaleBox = document.querySelector(".modaleBox")
 let originalHeader = document.querySelector('header:not([class])');
 let modGallery = document.querySelector(".modGallery")
 
-let modale = function() {    // fait apparaitre la modale
-    bodyAnchor.insertBefore(modalePage,modHeaderBand); // pour position absolute
-    // bodyAnchor.insertBefore(modaleBox,modHeaderBand); // pour position absolute
-    modalePage.appendChild(modaleBox);
-    modalePage.classList.toggle("invisible");
-    // modaleBox.classList.toggle("invisible");
-    for(let work of works) { 
+// Affiche la galerie fonctionnelle de modale1 (images et corbeilles)
+// Affiche la galerie fonctionnelle de modale1 (images et corbeilles)
+let displayModGallery = async function() {
+
+    modGallery.innerHTML = "";
+    let works = await getWorks();
+    console.log('Lancement displayModGallery')
+
+    for(let work of works) { // remplit la gallerie de modale1 avec images et corbeilles
         modGallery.innerHTML += `<figure>
         <img src="${work.imageUrl}" alt="${work.title}">
         <div>
         <i class="fa-solid fa-trash-can"></i>
         </div>
-        </figure>`        
-    }
-    let corbeilles = document.querySelectorAll(".modGallery figure div"); //NodeList
-    let i = 1
-    for (let corbeille of corbeilles) {    
-        corbeille.setAttribute("id", i);
-        i++
-        corbeille.addEventListener("click", event => {
+        </figure>`
+
+        // Ci-dessous, le selecteur avance permet de target la corbeille actuelle dans la boucle.
+        let corbeille = document.querySelector(".modGallery figure:last-of-type div"); 
+        corbeille.setAttribute("id", `${work.id}`); // On lui donne l'id du work actuel
+        corbeille.addEventListener("click", () => { // Permet a la corbeille de lancer delwork
             console.log(corbeille.id);
-            delWork(corbeille.id)
-        });
+            delWork(corbeille.id); // la corbeille lance delwork avec son id (identique work.id)
+        })   
     }
-
 };
+// Affiche la galerie fonctionnelle de modale1 (images et corbeilles)
+// Affiche la galerie fonctionnelle de modale1 (images et corbeilles)
 
-let crossButton = document.querySelectorAll(".modaleBox .fa-xmark"); // Ferme la modale 
-for(let cross of crossButton) {
-    cross.addEventListener("click", event => {
-        modale1.classList.remove("invisible");
-        modale2.classList.add("invisible");
-        modalePage.classList.toggle("invisible");
-
-    
-        for(let work of works) { 
-            modGallery.innerHTML = ""; // reset affichage gallerie modale
-        }
-        
-    });
-}
-
-
-
-let delWork = async function(id) { // Delete selon l'id renseigne en argument.
+// Requete DELETE
+// Requete DELETE
+let delWork = async function(id) { // Delete selon l'id (de la corbeille)renseigne en argument.
     let userToken = localStorage.getItem('userToken');
     console.log(`usertoken -> ${userToken}`);
     const response = await fetch(`http://localhost:5678/api/works/${id}`, {
@@ -198,45 +186,114 @@ let delWork = async function(id) { // Delete selon l'id renseigne en argument.
             'Authorization': 'Bearer ' + userToken,
             'Accept': '*/*'
         }
-    });
+    }) 
+    .then(response => {
+        if(!response.ok){
+            throw new Error("Probleme suppression");
+                
+            } else {
+                console.log("Suppression reussie" + response.status);
+                displayModGallery();
+            }
+    })
+};
+// Requete DELETE
+// Requete DELETE
+
+// ouverture et fermeture de la modale
+// ouverture et fermeture de la modale
+let modale = function() {    // fait apparaitre la modale
+    bodyAnchor.insertBefore(modalePage,modHeaderBand); // pour position absolute
+    modalePage.appendChild(modaleBox);
+    modalePage.classList.toggle("invisible");
+    displayModGallery();
 };
 
-modifButton.addEventListener("click", event => {
+modifButton.addEventListener("click", ()=> {
     modale();
 });
+
+let crossButton = document.querySelectorAll(".modaleBox .fa-xmark"); // Ferme la modale 
+for(let cross of crossButton) {
+    cross.addEventListener("click", () => {
+        modale1.classList.remove("invisible");
+        modale2.classList.add("invisible");
+        modalePage.classList.toggle("invisible");
+        // displayModGallery() //affichage lors de l'execution de modale()
+        displayGallerie();       
+    });
+}
+// ouverture et fermeture de la modale
+// ouverture et fermeture de la modale
+
+
+
+// Passage d'une modale a l'autre au clique "ajouter photo"
+// Passage d'une modale a l'autre au clique "ajouter photo"
 let modale1 = document.querySelector(".modale1")
 let modale2 = document.querySelector(".modale2")
 let modale1Button = document.querySelector(".modale1 button");
-modale1Button.addEventListener("click", event => {
+
+modale1Button.addEventListener("click", () => {
     modale1.classList.toggle("invisible");
     modale2.classList.toggle("invisible"); 
+});
+// Passage d'une modale a l'autre au clique "ajouter photo"
+// Passage d'une modale a l'autre au clique "ajouter photo"
 
+
+//Contenu dynamique de la balise select
+//Contenu dynamique de la balise select
 let select = document.querySelector("#inputCategory");
 for(let i = 0; i < filters.length; i++) {
     let option = document.createElement('option');
     select.appendChild(option); 
-    option.setAttribute('value', filters[i].id);
-    option.innerText = filters[i].name;       
+    option.setAttribute('value', filters[i].id); // La valeur enregistree est l'id de la categorie
+    option.innerText = filters[i].name; // l'option affichee est le nom de la categorie     
 }
+select.selectedIndex = -1;
+//Contenu dynamique de la balise select
+//Contenu dynamique de la balise select
+
+//Modale2 -> fetch new image)
+//Modale2 -> fetch new image)
+let modale2Button = document.querySelector(".modale2 button");
+modale2Button.addEventListener("click", event => {
+    let userToken = localStorage.getItem('userToken');
+    let modale2Form = document.querySelector(".modale2 form");
+    let formData2 = new FormData(modale2Form);
+    console.log(formData2);
+    const response = fetch('http://localhost:5678/api/works', {
+        method: 'POST',
+        headers: {
+            'Authorization': 'Bearer ' + userToken
+        },
+        body: formData2
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error("Echec de la requete HTTP");
+        } else {
+            modale1.classList.remove("invisible");
+            modale2.classList.add("invisible");
+            modalePage.classList.toggle("invisible");
+            displayModGallery();
+            displayGallerie();
+        }
+        return response.json();
+    })
+    // .then(data => {
+    //     // Traitez la réponse de l'API ici
+    // })
+    });
+//Modale2 -> fetch new image)
+//Modale2 -> fetch new image)
 
 
-
-
-});
-// {/* <option value="valeurOption1">Option 1</option> */}
-
-
-/// LOGINPAGE ///
-/// LOGINPAGE ///
-/// LOGINPAGE ///
-
-
-const homePageURL = 'http://127.0.0.1:5500/index.html';
-const loginURL = 'http://localhost:5678/api/users/login'; // L'URL de swagger
+// Gestion du login //
+// Gestion du login //
+const loginURL = 'http://localhost:5678/api/users/login'; // L'URL de swagger pour login
 const loginButton = document.querySelector(".loginBox button"); // Mon bouton "se connecter"
-
-
-
 
 let extractDataForm = function() { // Return les valeurs du formulaire directement dans le bon format.
 
@@ -247,7 +304,8 @@ let extractDataForm = function() { // Return les valeurs du formulaire directeme
      "email": "${emailInput.value}",
      "password": "${passwordInput.value}"
    }`
- }
+ } // C'est un peu hardcode mais bon ... c'est plus simple comme ca.
+   // J'avais pas envie de convertir un objet FormData en JSON ... 
 
  loginButton.addEventListener("click", event => {  // Connexion si click
 
@@ -259,42 +317,28 @@ let extractDataForm = function() { // Return les valeurs du formulaire directeme
         body: extractDataForm()
     });
 
-    postLogin // Comment arrive-t-on a recuperer la reponse et le json juste avec des .then ?? Cmt ca marche??
-    .then((pouniette) => { // La reponse 'serveur'; Objet de type response
-        // console.log(pouniette.status) // 200 401
-        console.log(pouniette);
-
-        if(!pouniette.ok) {
-
+    postLogin // chaque .then reprend le return de la promesse precedente
+    .then((pouniette) => { // Le parametre definit ici contient la reponse'serveur'-> un Objet de type response
+        if(!pouniette.ok) { // .ok est un attribut d'objet de type response ("pouniette")
             throw new Error("Erreur dans l'identifiant ou le mot de passe");
-
         } else {
-            
-            // modale() & adminMod()
-            adminMod()
-
-            homePage.classList.toggle("invisible");
-            loginPage.classList.toggle("invisible");
-            
+            adminMod()            
             return pouniette.json();  // On convertit la reponse en format JSON pour l'exploiter 
-
         }
     })
-    .then((json) => { // Recuperation du token -> Objet userId ; token
+    .then((json) => { // json provient du return precedent Recuperation du token -> Objet userId ; token
         let userToken = json
-        localStorage.setItem('userToken', userToken.token); // Je n'arrive toukours pas a exploiter le token en dehors de sa portee locale.           
+        localStorage.setItem('userToken', userToken.token); 
     })
-
 });
+// Gestion du login //
+// Gestion du login //
 
-let userToken = localStorage.getItem('userToken');
-console.log(`usertoken -> ${userToken.token}`);
-// / LOGINPAGE ///
-// / LOGINPAGE ///
-// / LOGINPAGE ///
-
-// Ne pas oublier de corriger modifbutton, qui se duplique
 // Changer login en logout + son comportement.
+// Reset les valeurs du formulaire apres la requete d'ajout de photo
+// Je dois faire le bouton retour aussi
+// Il faut que la modale se ferme si je clique en dehors aussi.
 
-// En fait, envoyer une requete en exploitant FormData, ca doit pouvoir marcher, il faut juste convertir le truc en JSON ...
-// ID pour associer le label et l'input ; name pour l'iddentification de la clef par l'API
+// Il faut qu'une fois que l'utilisateur renseigne sa photo, elle s'affiche a la place de la div inputfile
+// Je dois reprendre mon HTML pour que ca se comporte comme sur la maquette.
+

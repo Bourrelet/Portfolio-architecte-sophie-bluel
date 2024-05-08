@@ -135,6 +135,9 @@ let adminMod = function() {  // Je dois encore changer login en logout
 
     modifButton.innerHTML = `<i class="fa-regular fa-pen-to-square"></i> <p>modifier</p>`
     filterBox.classList.toggle("invisible");     // Fait disparaitre les filtres
+    homePage.classList.toggle("invisible"); // disparition homepage
+    loginPage.classList.toggle("invisible"); // apparition loginpage
+    
 }
 // Integration Dynamique admin Mod
 // Integration Dynamique admin Mod
@@ -144,8 +147,8 @@ let modaleBox = document.querySelector(".modaleBox")
 let originalHeader = document.querySelector('header:not([class])');
 let modGallery = document.querySelector(".modGallery")
 
-// Affiche la galerie fonctionnelle de modale1 images et corbeilles
-// Affiche la galerie fonctionnelle de modale1 images et corbeilles
+// Affiche la galerie fonctionnelle de modale1 (images et corbeilles)
+// Affiche la galerie fonctionnelle de modale1 (images et corbeilles)
 let displayModGallery = async function() {
 
     modGallery.innerHTML = "";
@@ -160,27 +163,21 @@ let displayModGallery = async function() {
         </div>
         </figure>`
 
-        // Ce selecteur avance target la corbeille actuelle de la boucle.
+        // Ci-dessous, le selecteur avance permet de target la corbeille actuelle dans la boucle.
         let corbeille = document.querySelector(".modGallery figure:last-of-type div"); 
         corbeille.setAttribute("id", `${work.id}`); // On lui donne l'id du work actuel
         corbeille.addEventListener("click", () => { // Permet a la corbeille de lancer delwork
             console.log(corbeille.id);
-            delWork(corbeille.id); // la corbeille lance delwork avec son id.
+            delWork(corbeille.id); // la corbeille lance delwork avec son id (identique work.id)
         })   
     }
 };
-// Affiche la galerie fonctionnelle de modale1 images et corbeilles
-// Affiche la galerie fonctionnelle de modale1 images et corbeilles
+// Affiche la galerie fonctionnelle de modale1 (images et corbeilles)
+// Affiche la galerie fonctionnelle de modale1 (images et corbeilles)
 
-
-let modale = function() {    // fait apparaitre la modale
-    bodyAnchor.insertBefore(modalePage,modHeaderBand); // pour position absolute
-    modalePage.appendChild(modaleBox);
-    modalePage.classList.toggle("invisible");
-    displayModGallery();
-};
-
-let delWork = async function(id) { // Delete selon l'id renseigne en argument.
+// Requete DELETE
+// Requete DELETE
+let delWork = async function(id) { // Delete selon l'id (de la corbeille)renseigne en argument.
     let userToken = localStorage.getItem('userToken');
     console.log(`usertoken -> ${userToken}`);
     const response = await fetch(`http://localhost:5678/api/works/${id}`, {
@@ -189,60 +186,77 @@ let delWork = async function(id) { // Delete selon l'id renseigne en argument.
             'Authorization': 'Bearer ' + userToken,
             'Accept': '*/*'
         }
-    })
+    }) 
     .then(response => {
         if(!response.ok){
-            throw new Error("Probleme corbeille");
+            throw new Error("Probleme suppression");
                 
             } else {
-                console.log("Suppression reussie?" + response.status);
+                console.log("Suppression reussie" + response.status);
                 displayModGallery();
-
             }
     })
 };
+// Requete DELETE
+// Requete DELETE
 
+// ouverture et fermeture de la modale
+// ouverture et fermeture de la modale
+let modale = function() {    // fait apparaitre la modale
+    bodyAnchor.insertBefore(modalePage,modHeaderBand); // pour position absolute
+    modalePage.appendChild(modaleBox);
+    modalePage.classList.toggle("invisible");
+    displayModGallery();
+};
 
-let crossButton = document.querySelectorAll(".modaleBox .fa-xmark"); // Ferme la modale 
-for(let cross of crossButton) {
-    cross.addEventListener("click", event => {
-        modale1.classList.remove("invisible");
-        modale2.classList.add("invisible");
-        modalePage.classList.toggle("invisible");
-        displayModGallery()
-        displayGallerie();       
-    });
-}
-
-
-
-
-modifButton.addEventListener("click", event => {
+modifButton.addEventListener("click", ()=> {
     modale();
 });
 
-// Passage d'une modale a l'autre
+let crossButton = document.querySelectorAll(".modaleBox .fa-xmark"); // Ferme la modale 
+for(let cross of crossButton) {
+    cross.addEventListener("click", () => {
+        modale1.classList.remove("invisible");
+        modale2.classList.add("invisible");
+        modalePage.classList.toggle("invisible");
+        // displayModGallery() //affichage lors de l'execution de modale()
+        displayGallerie();       
+    });
+}
+// ouverture et fermeture de la modale
+// ouverture et fermeture de la modale
+
+
+
+// Passage d'une modale a l'autre au clique "ajouter photo"
+// Passage d'une modale a l'autre au clique "ajouter photo"
 let modale1 = document.querySelector(".modale1")
 let modale2 = document.querySelector(".modale2")
 let modale1Button = document.querySelector(".modale1 button");
-modale1Button.addEventListener("click", event => {
+
+modale1Button.addEventListener("click", () => {
     modale1.classList.toggle("invisible");
     modale2.classList.toggle("invisible"); 
-// Affichage des options de categories
+});
+// Passage d'une modale a l'autre au clique "ajouter photo"
+// Passage d'une modale a l'autre au clique "ajouter photo"
+
+
+//Contenu dynamique de la balise select
+//Contenu dynamique de la balise select
 let select = document.querySelector("#inputCategory");
 for(let i = 0; i < filters.length; i++) {
     let option = document.createElement('option');
     select.appendChild(option); 
-    option.setAttribute('value', filters[i].id);
-    option.innerText = filters[i].name;       
+    option.setAttribute('value', filters[i].id); // La valeur enregistree est l'id de la categorie
+    option.innerText = filters[i].name; // l'option affichee est le nom de la categorie     
 }
 select.selectedIndex = -1;
-// Il faut qu'une fois que l'utilisateur renseigne sa photo, elle s'affiche a la place de la div inputfile
-// Je dois reprendre mon HTML pour que ca se comporte comme sur la maquette.
-});
+//Contenu dynamique de la balise select
+//Contenu dynamique de la balise select
 
 //Modale2 -> fetch new image)
-
+//Modale2 -> fetch new image)
 let modale2Button = document.querySelector(".modale2 button");
 modale2Button.addEventListener("click", event => {
     let userToken = localStorage.getItem('userToken');
@@ -272,26 +286,14 @@ modale2Button.addEventListener("click", event => {
     //     // Traitez la réponse de l'API ici
     // })
     });
-
-// On va tenter le formData PQ ya plein de fichiers de differents types.
-// Je dois faire le bouton retour aussi
-// Normalement, si la reponse est acceptee, works se mettera a jour. A moins que je doive le relancer moi meme.
-
+//Modale2 -> fetch new image)
 //Modale2 -> fetch new image)
 
 
-
-/// LOGINPAGE ///
-/// LOGINPAGE ///
-/// LOGINPAGE ///
-
-
-const homePageURL = 'http://127.0.0.1:5500/index.html';
-const loginURL = 'http://localhost:5678/api/users/login'; // L'URL de swagger
+// Gestion du login //
+// Gestion du login //
+const loginURL = 'http://localhost:5678/api/users/login'; // L'URL de swagger pour login
 const loginButton = document.querySelector(".loginBox button"); // Mon bouton "se connecter"
-
-
-
 
 let extractDataForm = function() { // Return les valeurs du formulaire directement dans le bon format.
 
@@ -302,7 +304,8 @@ let extractDataForm = function() { // Return les valeurs du formulaire directeme
      "email": "${emailInput.value}",
      "password": "${passwordInput.value}"
    }`
- }
+ } // C'est un peu hardcode mais bon ... c'est plus simple comme ca.
+   // J'avais pas envie de convertir un objet FormData en JSON ... 
 
  loginButton.addEventListener("click", event => {  // Connexion si click
 
@@ -314,42 +317,28 @@ let extractDataForm = function() { // Return les valeurs du formulaire directeme
         body: extractDataForm()
     });
 
-    postLogin // Comment arrive-t-on a recuperer la reponse et le json juste avec des .then ?? Cmt ca marche??
-    .then((pouniette) => { // La reponse 'serveur'; Objet de type response
-        // console.log(pouniette.status) // 200 401
-        console.log(pouniette);
-
-        if(!pouniette.ok) {
-
+    postLogin // chaque .then reprend le return de la promesse precedente
+    .then((pouniette) => { // Le parametre definit ici contient la reponse'serveur'-> un Objet de type response
+        if(!pouniette.ok) { // .ok est un attribut d'objet de type response ("pouniette")
             throw new Error("Erreur dans l'identifiant ou le mot de passe");
-
         } else {
-            
-            // modale() & adminMod()
-            adminMod()
-
-            homePage.classList.toggle("invisible");
-            loginPage.classList.toggle("invisible");
-            
+            adminMod()            
             return pouniette.json();  // On convertit la reponse en format JSON pour l'exploiter 
-
         }
     })
-    .then((json) => { // Recuperation du token -> Objet userId ; token
+    .then((json) => { // json provient du return precedent Recuperation du token -> Objet userId ; token
         let userToken = json
-        localStorage.setItem('userToken', userToken.token); // Je n'arrive toukours pas a exploiter le token en dehors de sa portee locale.           
+        localStorage.setItem('userToken', userToken.token); 
     })
-
 });
+// Gestion du login //
+// Gestion du login //
 
-let userToken = localStorage.getItem('userToken');
-console.log(`usertoken -> ${userToken.token}`);
-// / LOGINPAGE ///
-// / LOGINPAGE ///
-// / LOGINPAGE ///
-
-// Ne pas oublier de corriger modifbutton, qui se duplique
 // Changer login en logout + son comportement.
+// Reset les valeurs du formulaire apres la requete d'ajout de photo
+// Je dois faire le bouton retour aussi
+// Il faut que la modale se ferme si je clique en dehors aussi.
 
-// En fait, envoyer une requete en exploitant FormData, ca doit pouvoir marcher, il faut juste convertir le truc en JSON ...
-// ID pour associer le label et l'input ; name pour l'iddentification de la clef par l'API
+// Il faut qu'une fois que l'utilisateur renseigne sa photo, elle s'affiche a la place de la div inputfile
+// Je dois reprendre mon HTML pour que ca se comporte comme sur la maquette.
+

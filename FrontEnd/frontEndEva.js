@@ -1,5 +1,32 @@
 // HOMEPAGE //
 
+// Integration de l'image choisie par User dans le formulaire
+// Integration de l'image choisie par User dans le formulaire
+
+let inputFile = document.querySelector("#inputFile");
+let userPicBox = document.querySelector('label[for="inputFile"] div');  // Bizarrement le navigateur ne reconnait pas le style "inputFileBox" de la balise div.
+
+inputFile.addEventListener("change", () => { 
+    console.log(`inputFile : ${inputFile}`);
+    let userPic = inputFile.files[0]; 
+    let userPicURL = URL.createObjectURL(userPic); // Merci ChatGPT -> Approfondir le sujet avec MDN.
+    console.log(`userPicURL : ${userPicURL}`);
+    userPicBox.innerHTML = ""
+    userPicBox.innerHTML = `<img src="${userPicURL}" alt="photo about to be sent">`;
+})
+
+const emptyUserPicBox = function(){
+    userPicBox.innerHTML = `							
+    <i class="fa-regular fa-image"></i>
+    <span><p>+ Ajouter photo</p></span>				
+    <p>jpeg, png : 4mo max</p>
+    `
+};
+// Integration de l'image choisie par User dans le formulaire
+// Integration de l'image choisie par User dans le formulaire
+
+
+
 // Recuperation DATA
 // Recuperation DATA
 let getWorks = async function() {
@@ -102,6 +129,7 @@ for (let button of buttonList){ // button prend les valeurs de la NodeList
 const homePage = document.querySelector("#homePage");
 const loginPage = document.querySelector("#loginPage");
 const logButt = document.querySelector("#logButton");
+
 logButt.addEventListener("click", () => {
     homePage.classList.toggle("invisible");
     loginPage.classList.toggle("invisible");    
@@ -137,7 +165,12 @@ let adminMod = function() {  // Je dois encore changer login en logout
     filterBox.classList.toggle("invisible");     // Fait disparaitre les filtres
     homePage.classList.toggle("invisible"); // disparition homepage
     loginPage.classList.toggle("invisible"); // apparition loginpage
-    
+
+    logButt.innerHTML = "logout"
+    logButt.addEventListener("click", () => { // bouton logout ->
+        localStorage.clear(); // vide localstorage
+        window.location.reload(true); // rechargement page sans le cache
+    });    
 }
 // Integration Dynamique admin Mod
 // Integration Dynamique admin Mod
@@ -170,18 +203,11 @@ let displayModGallery = async function() {
 
     let corbeilles = document.querySelectorAll(".modGallery figure div"); // On def le comportement des corbeilles.
     for (let corbeille of corbeilles) {
-        console.log(corbeille);
         corbeille.addEventListener("click", () => { 
             delWork(corbeille.id); // la corbeille lance delWork() avec son id comme argument.
         });
 }
 };
-
-
-
-
-
-
 // Affiche la galerie fonctionnelle de modale1 (images et corbeilles)
 // Affiche la galerie fonctionnelle de modale1 (images et corbeilles)
 
@@ -212,8 +238,13 @@ let delWork = async function(id) { // Delete selon l'id (de la corbeille)renseig
 
 // ouverture et fermeture de la modale
 // ouverture et fermeture de la modale
-let openModale = function() {    // fait apparaitre la modale
-    bodyAnchor.insertBefore(modalePage,modHeaderBand); // pour position absolute
+modaleBox.addEventListener("click", (event) => { // Pour la boite soit click-proof.
+    event.stopPropagation(); // sinon quand je clique sur la boite ca ferme modalePage.
+    // Il faut definir ce comportement pq modaleBox est l'enfant de modalePage
+});
+
+let openModale = function() {  
+    bodyAnchor.insertBefore(modalePage,modHeaderBand); // pour position absolute -> literalement "over the top"
     modalePage.appendChild(modaleBox);
     modalePage.classList.toggle("invisible");
     displayModGallery();
@@ -224,6 +255,7 @@ modifButton.addEventListener("click", ()=> {
 });
 
 let closeModale = function(){
+    emptyUserPicBox(); 
     console.log("closing modale")
     modale1.classList.remove("invisible");
     modale2.classList.add("invisible");
@@ -231,22 +263,22 @@ let closeModale = function(){
     displayGallerie();   
 };
 
-modaleBox.addEventListener("click", (event) => { // Pour la boite soit click-proof.
-    event.stopPropagation(); // Empeche la propagation de l'event aux enfants et aux parents ...
-    // sinon quand je clique sur la boite ca ferme modalePage.
+let leftArrowButton = document.querySelector(".modale2 .fa-arrow-left"); // bouton retour
+leftArrowButton.addEventListener("click",() => {
+    emptyUserPicBox();
+    modale2.classList.toggle("invisible");
+    modale1.classList.toggle("invisible");
 });
 
-
-let crossButton = document.querySelectorAll(".modaleBox .fa-xmark"); // Ferme la modale 
+let crossButton = document.querySelectorAll(".modaleBox .fa-xmark"); // boutons croix ; Ferme la modale 
 for(let cross of crossButton) {
     cross.addEventListener("click", (event) => {
-        // event.stopPropagation(); // C'est feerique 
         console.log("crossButton clicked");
-        closeModale();    
+        closeModale();
+           
     });
 }
 modalePage.addEventListener("click", (event) => {
-    // event.stopPropagation(); // C'est magique
     console.log("modalePage clicked");
     closeModale();     
 });
@@ -262,8 +294,6 @@ let modale2 = document.querySelector(".modale2")
 let modale1Button = document.querySelector(".modale1 button");
 
 modale1Button.addEventListener("click", (event) => {
-    // event.stopPropagation();
-
     modale1.classList.toggle("invisible");
     modale2.classList.toggle("invisible"); 
 });
@@ -290,7 +320,6 @@ select.selectedIndex = -1;
 //Modale2 -> fetch new image)
 let modale2Button = document.querySelector(".modale2 button");
 modale2Button.addEventListener("click", (event) => {
-    // event.stopPropagation()
 
     let userToken = localStorage.getItem('userToken');
     let modale2Form = document.querySelector(".modale2 form");
@@ -304,6 +333,9 @@ modale2Button.addEventListener("click", (event) => {
         body: formData2
     })
     .then(response => {
+        emptyUserPicBox();
+        modale2Form.reset();
+        select.selectedIndex = -1;
         if (!response.ok) {
             throw new Error("Echec de la requete HTTP");
         } else { // module l'affichage et refresh les galleries.
@@ -313,7 +345,7 @@ modale2Button.addEventListener("click", (event) => {
             displayModGallery();
             displayGallerie();
         }
-        return response.json(); // Pas forcement besoin du return; On le laisse la en attendant.
+        // return response.json(); // Pas forcement besoin du return; On le laisse la en attendant.
     })
 
 });
@@ -366,12 +398,3 @@ let extractDataForm = function() { // Return les valeurs du formulaire directeme
 // Gestion du login //
 // Gestion du login // 
 
-// Changer login en logout + son comportement.
-// Reset les valeurs du formulaire apres la requete d'ajout de photo
-// Je dois faire le bouton retour aussi
-// Il faut que la modale se ferme si je clique en dehors aussi.
-    // Il faut que je passe mon event de cloture en fonction. Et que je l'appelle sur le click de la pagegrise
-
-// Il faut qu'une fois que l'utilisateur renseigne sa photo, elle s'affiche a la place de la div inputfile
-// Je dois reprendre mon HTML pour que ca se comporte comme sur la maquette.
-// Seule ma derniere corbeille fonctionne.

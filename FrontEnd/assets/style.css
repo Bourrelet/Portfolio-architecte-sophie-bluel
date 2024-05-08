@@ -225,7 +225,7 @@ footer nav ul {
 
 .modalePage {
 	position: absolute;
-	/* z-index: 500; */
+	z-index: 500;
 	background-color: rgba(0, 0, 0, 0.3);
 	width: 1440px;
 	height: 3326px;
@@ -233,7 +233,7 @@ footer nav ul {
 
 .modaleBox {
 	position: relative;
-	/* z-index: 750; */
+	z-index: 750;
 	width: 630px;
 	height: 688px;
 	margin: 0 auto;
@@ -249,7 +249,7 @@ footer nav ul {
 }
 .modifButton {
 	text-align: center;
-	/* z-index: 200; */
+	z-index: 200;
 	border: 2px solid black;
 	border-radius: 25%;
 	padding: 5px;

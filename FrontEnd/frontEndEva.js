@@ -144,38 +144,33 @@ let modaleBox = document.querySelector(".modaleBox")
 let originalHeader = document.querySelector('header:not([class])');
 let modGallery = document.querySelector(".modGallery")
 
-
+// Affiche la galerie fonctionnelle de modale1 images et corbeilles
+// Affiche la galerie fonctionnelle de modale1 images et corbeilles
 let displayModGallery = async function() {
+
     modGallery.innerHTML = "";
     let works = await getWorks();
     console.log('Lancement displayModGallery')
+
     for(let work of works) { // remplit la gallerie de modale1 avec images et corbeilles
         modGallery.innerHTML += `<figure>
         <img src="${work.imageUrl}" alt="${work.title}">
         <div>
         <i class="fa-solid fa-trash-can"></i>
         </div>
-        </figure>`        
-    }
-    let corbeilles = document.querySelectorAll(".modGallery figure div"); //NodeList
-    let i = 1
-    for (let corbeille of corbeilles) {    
-        corbeille.setAttribute("id", i);
-        i++
-        corbeille.addEventListener("click", event => { // Permet aux corbeilles de lancer delwork
-            console.log(corbeille.id);
-            delWork(corbeille.id) // lance la fonction delWork
-        });
-    }
-};// Fonctionne avec les works de la BD, mais pas avec ceux que je cree
-// -> Ca plante surement car l'id de corbeille n'est pas le bon
-// Je devrais verifier mon formdata de creation avec 
-// for (let pair of formData.entries()) {
-//     console.log(pair[0] + ': ' + pair[1]);
-// }
-// Sinon je dois trouver un moyen plus fiable d'attribuer a corbeille directement le meme id que work.
-// Regarder mon cours sur les methodes iteratives, ya pe moyen de moyenner.
+        </figure>`
 
+        // Ce selecteur avance target la corbeille actuelle de la boucle.
+        let corbeille = document.querySelector(".modGallery figure:last-of-type div"); 
+        corbeille.setAttribute("id", `${work.id}`); // On lui donne l'id du work actuel
+        corbeille.addEventListener("click", () => { // Permet a la corbeille de lancer delwork
+            console.log(corbeille.id);
+            delWork(corbeille.id); // la corbeille lance delwork avec son id.
+        })   
+    }
+};
+// Affiche la galerie fonctionnelle de modale1 images et corbeilles
+// Affiche la galerie fonctionnelle de modale1 images et corbeilles
 
 
 let modale = function() {    // fait apparaitre la modale

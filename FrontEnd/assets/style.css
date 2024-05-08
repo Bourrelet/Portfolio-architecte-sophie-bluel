@@ -263,7 +263,7 @@ footer nav ul {
 
 .modHeaderBand {
 	position: relative;
-	z-index: 400;
+	/* z-index: 400; */
 	text-align: center;
 	color: white;
 	background-color: black;

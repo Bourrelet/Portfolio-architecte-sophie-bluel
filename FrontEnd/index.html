@@ -114,6 +114,7 @@
 				<input type="password" name="password" value="S0phie" required>            
 				
 				<button type="button" class="anyButton">Se connecter</button>
+				<p id="errorMessage" style="color: red; display: none;">Erreur dans l'identifiant ou le mot de passe</p>
 	
 			</form>
 			<p>Mot de passe oublié?</p>
@@ -140,7 +141,7 @@
 				<form method="post" action="#"> 
 
 					<label for="inputFile">
-						<div>
+						<div class="inputFileBox">
 							<i class="fa-regular fa-image"></i>
 							<span><p>+ Ajouter photo</p></span>				
 							<p>jpeg, png : 4mo max</p>

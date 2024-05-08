@@ -384,6 +384,7 @@ let extractDataForm = function() { // Return les valeurs du formulaire directeme
     postLogin // chaque .then reprend le return de la promesse precedente
     .then((pouniette) => { // Le parametre definit ici contient la reponse'serveur'-> un Objet de type response
         if(!pouniette.ok) { // .ok est un attribut d'objet de type response ("pouniette")
+            document.getElementById("errorMessage").style.display = "block";
             throw new Error("Erreur dans l'identifiant ou le mot de passe");
         } else {
             adminMod()            

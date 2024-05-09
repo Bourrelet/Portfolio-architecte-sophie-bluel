@@ -1,12 +1,19 @@
 // HOMEPAGE //
 
-// Integration de l'image choisie par User dans le formulaire
-// Integration de l'image choisie par User dans le formulaire
+
+
+// Integration de l'image choisie par User dans le formulaire + bouton valider
+// Integration de l'image choisie par User dans le formulaire + bouton valider
 
 let inputFile = document.querySelector("#inputFile");
 let userPicBox = document.querySelector('label[for="inputFile"] div');  // Bizarrement le navigateur ne reconnait pas le style "inputFileBox" de la balise div.
 
 inputFile.addEventListener("change", () => { 
+    if (document.getElementById('inputFile').value !== '' &&  // affiche le bouton si tous les champs ont une valeur
+    document.getElementById('inputCategory').value !== '' && 
+    document.getElementById('inputTitle').value !== '') { 
+        modale2Button.classList.toggle("invisible");
+    }
     console.log(`inputFile : ${inputFile}`);
     let userPic = inputFile.files[0]; 
     let userPicURL = URL.createObjectURL(userPic); // Merci ChatGPT -> Approfondir le sujet avec MDN.
@@ -16,14 +23,38 @@ inputFile.addEventListener("change", () => {
 })
 
 const emptyUserPicBox = function(){
+    let modale2Form = document.querySelector(".modale2 form");
+    let select = document.querySelector("#inputCategory"); 
+
+    modale2Button.classList.add("invisible"); // cache le bouton valider de modale2
+    modale2Form.reset(); // reset le formulaire
+    select.selectedIndex = -1; //reset la categorie
     userPicBox.innerHTML = `							
     <i class="fa-regular fa-image"></i>
     <span><p>+ Ajouter photo</p></span>				
     <p>jpeg, png : 4mo max</p>
-    `
+    ` // Affiche le html d'origine
 };
-// Integration de l'image choisie par User dans le formulaire
-// Integration de l'image choisie par User dans le formulaire
+
+let inputCategory = document.querySelector("#inputCategory"); // affiche le bouton si tous les champs ont une valeur
+inputCategory.addEventListener("change", () => { 
+    if (document.getElementById('inputFile').value !== '' && 
+    document.getElementById('inputCategory').value !== '' && 
+    document.getElementById('inputTitle').value !== '') { 
+        modale2Button.classList.toggle("invisible");
+    }})
+
+
+let inputTitle = document.querySelector("#inputTitle"); // affiche le bouton si tous les champs ont une valeur
+inputTitle.addEventListener("change", () => { 
+    if (document.getElementById('inputFile').value !== '' && 
+    document.getElementById('inputCategory').value !== '' && 
+    document.getElementById('inputTitle').value !== '') { 
+        modale2Button.classList.toggle("invisible");
+    }})
+
+// Integration de l'image choisie par User dans le formulaire + bouton valider
+// Integration de l'image choisie par User dans le formulaire + bouton valider
 
 
 
@@ -318,7 +349,11 @@ select.selectedIndex = -1;
 
 //Modale2 -> fetch new image)
 //Modale2 -> fetch new image)
+
 let modale2Button = document.querySelector(".modale2 button");
+
+
+
 modale2Button.addEventListener("click", (event) => {
 
     let userToken = localStorage.getItem('userToken');

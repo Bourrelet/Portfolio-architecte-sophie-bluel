@@ -263,14 +263,14 @@ let closeModale = function(){
     displayGallerie();   
 };
 
-let leftArrowButton = document.querySelector(".modale2 .fa-arrow-left"); // bouton retour
+let leftArrowButton = document.querySelector(".modale2 .leftArrowButton"); // bouton retour
 leftArrowButton.addEventListener("click",() => {
     emptyUserPicBox();
     modale2.classList.toggle("invisible");
     modale1.classList.toggle("invisible");
 });
 
-let crossButton = document.querySelectorAll(".modaleBox .fa-xmark"); // boutons croix ; Ferme la modale 
+let crossButton = document.querySelectorAll(".modaleBox .crossButton"); // boutons croix ; Ferme la modale 
 for(let cross of crossButton) {
     cross.addEventListener("click", (event) => {
         console.log("crossButton clicked");

@@ -7,6 +7,9 @@
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Work+Sans&display=swap" rel="stylesheet">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Borel&family=Quicksand&family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 	<script src="https://kit.fontawesome.com/6cff575391.js" crossorigin="anonymous"></script>
 	<meta name="description" content="">
 	<link rel="stylesheet" href="./assets/style.css">
@@ -124,10 +127,10 @@
 	<div id="modalePage" class="invisible modalePage">
 		<div class="modaleBox">
 			<div class="modale1">
-				<nav class="rowBox">
-					<i class="fa-solid fa-xmark"></i>
+				<nav>
+					<div class="crossButton"><i class="fa-solid fa-xmark"></i></div>
 				</nav>
-				<h2>Galerie Photo</h2>
+				<h2 class="modaleTitle">Galerie Photo</h2>
 				<div class="modGallery"></div>	
 				<hr>
 				<button class="anyButton">Ajouter une photo</button>
@@ -135,10 +138,11 @@
 
 			<div class="modale2 invisible">
 				<nav class="rowBox">
-					<i class="fa-solid fa-arrow-left"></i>
-					<i class="fa-solid fa-xmark"></i>
+
+					<div class="leftArrowButton"><i class="fa-solid fa-arrow-left"></i></div>
+					<div class="crossButton"><i class="fa-solid fa-xmark"></i></div>
 				</nav>
-				<h2>Ajout photo</h2>
+				<h2 class="modaleTitle">Ajout photo</h2>
 				<form method="post" action="#"> 
 
 					<label for="inputFile">

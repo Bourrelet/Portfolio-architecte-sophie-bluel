@@ -1,3 +1,5 @@
+
+
 /* http://meyerweb.com/eric/tools/css/reset/
    v2.0 | 20110126
    License: none (public domain)
@@ -28,8 +30,23 @@ article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section {
 	display: block;
 }
+
+#loginButton { /* Si je le met tout en bas ca marche pas */
+	width: 179px !important;
+	height: 36px !important;
+	background-color: var(--vert-foret) !important;
+	margin: 7px auto;
+	font-weight: bold !important;
+	font-size: 14px !important;
+	border-radius: 60px;
+	color: white;
+   };/* Si je le met tout en haut, ca fait planter ModGallery */
+
+
+
 body {
 	line-height: 1;
+	background-color: rgba(255, 254, 248, 1) !important;   /* Ca fonctionne pas ... ca me casse les couilles */
 }
 ol, ul {
 	list-style: none;
@@ -189,25 +206,42 @@ footer nav ul {
 
 /* Modif Par Eva */
 
+:root {
+	--vert-foret: rgba(29, 97, 84, 1);
+  }
+
+
+  
+
 .invisible {
 	display: none !important;
 }
 
 
 .filterButton {
-	border: 2px solid black;
-	border-radius: 25%;
-	background-color: grey;
-	color: blue;
-	width: fit-content;
+	box-sizing: border-box;
+    border: 2px solid var(--vert-foret);
+    border-radius: 60px;
+    color: var(--vert-foret);
+    width: auto;
+	min-width: 100px;
+    font-weight: bold;
+    font-size: 16px;
+    padding: 8.5px 10px;
+	text-align: center;
+
 }
 .filterButton:hover{
 	cursor: pointer;
+	background-color: var(--vert-foret);
+	color: white;
 }
 
 .filterBox {  
 	display: flex;
 	justify-content: space-around;
+	width: 41vw;
+	margin: 50px auto;
 }
 
 .loginBox {
@@ -237,7 +271,6 @@ footer nav ul {
 	width: 630px;
 	height: 688px;
 	margin: 0 auto;
-	background-color: white;
 	top: 601px;
 	left: 405px;
 	display: flex;
@@ -248,17 +281,25 @@ footer nav ul {
 	
 }
 .modifButton {
+	position: relative;
+	bottom: 5px;
 	text-align: center;
 	z-index: 200;
-	border: 2px solid black;
-	border-radius: 25%;
 	padding: 5px;
 	margin-left: 25px;
-	background-color: rgba(15, 15, 15, 0.3);
+
+}
+.modifButton p { 
+	margin-left: 10px;
+}
+.modifButton i { 
+	font-size: 15px;
 }
 
 .rowBox {
 	display: flex;
+	justify-content: center;
+	align-items: baseline;
 }
 
 .modHeaderBand {
@@ -311,5 +352,28 @@ footer nav ul {
    .modaleBox nav {
 	justify-content: space-between;
    }
+
+   header nav ul li:hover {
+	cursor: pointer;
+	font-weight: bold;
+	color: black;
+   }
+
+   #loginPage input {
+	width: 379px;
+	height: 51px;
+	border: none;
+	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.9);
+	margin-top: 7px;
+	margin-bottom: 30px;
+	font-size: 1.2em;
+   };
+   #loginPage label {
+	margin-top: 30px;
+
+   }
+   #loginPage h2 {
+	margin-bottom: 7px;
+   };
 
 /* Modif Par Eva */

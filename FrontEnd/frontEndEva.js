@@ -339,6 +339,7 @@ modale2Button.addEventListener("click", (event) => {
         if (!response.ok) {
             throw new Error("Echec de la requete HTTP");
         } else { // module l'affichage et refresh les galleries.
+            console.log("POST Request fulfilled");
             modale1.classList.remove("invisible");
             modale2.classList.add("invisible");
             modalePage.classList.toggle("invisible");
@@ -399,3 +400,5 @@ let extractDataForm = function() { // Return les valeurs du formulaire directeme
 // Gestion du login //
 // Gestion du login // 
 
+
+// le bouton valider de modale2 ne doit apparaitre que si les champs du formulaire sont completes  

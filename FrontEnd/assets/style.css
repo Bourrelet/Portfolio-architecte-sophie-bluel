@@ -242,6 +242,8 @@ footer nav ul {
 	justify-content: space-around;
 	width: 41vw;
 	margin: 50px auto;
+	max-width: 1140px;
+    flex-wrap: wrap;
 }
 
 .loginBox {
@@ -259,10 +261,14 @@ footer nav ul {
 
 .modalePage {
 	position: absolute;
-	z-index: 500;
-	background-color: rgba(0, 0, 0, 0.3);
-	width: 1440px;
-	height: 3326px;
+    z-index: 500;
+    background-color: rgba(0, 0, 0, 0.3);
+    width: 1440px;
+    height: 3326px;
+    
+	left: 50%; /* Place l'élément à 50% de la largeur du conteneur parent */
+    transform: translateX(-50%); /* Décale l'élément de moitié de sa propre largeur vers la gauche */
+	/*Merci chatGPT*/
 }
 
 .modaleBox {
@@ -280,6 +286,14 @@ footer nav ul {
 	padding: 26px 16.66% 45px 16.66%;
 	
 }
+
+.rowBox {
+	display: flex;
+	justify-content: center;
+	align-items: baseline;
+}
+
+
 .modifButton {
 	position: relative;
 	bottom: 5px;
@@ -296,22 +310,28 @@ footer nav ul {
 	font-size: 15px;
 }
 
-.rowBox {
-	display: flex;
-	justify-content: center;
-	align-items: baseline;
+
+.modHeaderBand p { 
+	margin: auto 0;
+	margin-left: 10px;
+	
+}
+.modHeaderBand i {
+	margin: auto 0; 
+	font-size: 15px;
 }
 
 .modHeaderBand {
 	position: relative;
-	/* z-index: 400; */
 	text-align: center;
 	color: white;
 	background-color: black;
+	width: 1440px;
 	height: 59px;
 	display: flex;
 	justify-content: center;
 	margin: 0px;
+	right: 150px;
 }
 
 .anyButton:hover {

@@ -12,8 +12,11 @@ inputFile.addEventListener("change", () => {
     if (document.getElementById('inputFile').value !== '' &&  // affiche le bouton si tous les champs ont une valeur
     document.getElementById('inputCategory').value !== '' && 
     document.getElementById('inputTitle').value !== '') { 
-        modale2Button.classList.toggle("invisible");
-    }
+        modale2Button.classList.remove("invisible");
+    } 
+    // else {
+    //     modale2Button.classList.add("invisible");
+    // }
     console.log(`inputFile : ${inputFile}`);
     let userPic = inputFile.files[0]; 
     let userPicURL = URL.createObjectURL(userPic); // Merci ChatGPT -> Approfondir le sujet avec MDN.
@@ -38,19 +41,25 @@ const emptyUserPicBox = function(){
 
 let inputCategory = document.querySelector("#inputCategory"); // affiche le bouton si tous les champs ont une valeur
 inputCategory.addEventListener("change", () => { 
+    
     if (document.getElementById('inputFile').value !== '' && 
     document.getElementById('inputCategory').value !== '' && 
     document.getElementById('inputTitle').value !== '') { 
-        modale2Button.classList.toggle("invisible");
-    }})
+        modale2Button.classList.remove("invisible");
+    }else {modale2Button.classList.add("invisible");}
+})
 
 
 let inputTitle = document.querySelector("#inputTitle"); // affiche le bouton si tous les champs ont une valeur
 inputTitle.addEventListener("change", () => { 
+    
     if (document.getElementById('inputFile').value !== '' && 
     document.getElementById('inputCategory').value !== '' && 
     document.getElementById('inputTitle').value !== '') { 
-        modale2Button.classList.toggle("invisible");
+        modale2Button.classList.remove("invisible");
+    }
+    else {
+        modale2Button.classList.add("invisible");
     }})
 
 // Integration de l'image choisie par User dans le formulaire + bouton valider
@@ -175,10 +184,13 @@ let modHeaderBand = document.createElement('header');
 let folioTextBox = document.createElement('div')
 let folioTitle = document.querySelector('#portfolio h2');
 let modifButton = document.createElement('div');
+let introduction =document.querySelector("#introduction")
 
 let adminMod = function() {  // Je dois encore changer login en logout
     modHeaderBand.innerHTML= `<i class="fa-regular fa-pen-to-square"></i> <p>Mode edition</p>`;
     bodyAnchor.prepend(modHeaderBand); // Definit comme premier-ne de header
+    originalHeader.setAttribute("style", "margin-top: 38px;"); // Reduction dynamique de 50 a 38px;
+    introduction.setAttribute("style", "margin-top: 92px;") // reduction dynamique de 139 a 92px;
 
     modHeaderBand.classList.add("rowBox");
     modHeaderBand.classList.add("modHeaderBand");
@@ -192,8 +204,8 @@ let adminMod = function() {  // Je dois encore changer login en logout
     modifButton.classList.add("modifButton");
     modifButton.classList.add("anyButton");
 
-    modifButton.innerHTML = `<i class="fa-regular fa-pen-to-square"></i> <p>modifier</p>`
-    filterBox.classList.toggle("invisible");     // Fait disparaitre les filtres
+    modifButton.innerHTML = `<i class="fa-regular fa-pen-to-square"></i> <p>modifier</p>` 
+    filterBox.innerHTML= " ";    // Fait disparaitre les filtres sans decaller les elements du DOM
     homePage.classList.toggle("invisible"); // disparition homepage
     loginPage.classList.toggle("invisible"); // apparition loginpage
 

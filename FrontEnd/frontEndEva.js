@@ -1,67 +1,62 @@
-// HOMEPAGE //
-
-
-
 // Integration de l'image choisie par User dans le formulaire + bouton valider
 // Integration de l'image choisie par User dans le formulaire + bouton valider
-
 let inputFile = document.querySelector("#inputFile");
-let userPicBox = document.querySelector('label[for="inputFile"] div');  // Bizarrement le navigateur ne reconnait pas le style "inputFileBox" de la balise div.
+let userPicBox = document.querySelector('label[for="inputFile"] div');
 
 inputFile.addEventListener("change", () => { 
-    if (document.getElementById('inputFile').value !== '' &&  // affiche le bouton si tous les champs ont une valeur
+
+    if (document.getElementById('inputFile').value !== '' &&  
     document.getElementById('inputCategory').value !== '' && 
     document.getElementById('inputTitle').value !== '') { 
-        modale2Button.classList.remove("invisible");
+        modale2Button.classList.remove("invisible");  // affiche modale2Button si tous les champs du formulaire ont une valeur.
     } 
-    // else {
-    //     modale2Button.classList.add("invisible");
-    // }
+
     console.log(`inputFile : ${inputFile}`);
     let userPic = inputFile.files[0]; 
-    let userPicURL = URL.createObjectURL(userPic); // Merci ChatGPT -> Approfondir le sujet avec MDN.
+    let userPicURL = URL.createObjectURL(userPic); // Genere une URL exploitable.
     console.log(`userPicURL : ${userPicURL}`);
     userPicBox.innerHTML = ""
-    userPicBox.innerHTML = `<img src="${userPicURL}" alt="photo about to be sent">`;
+    userPicBox.innerHTML = `<img src="${userPicURL}" alt="photo about to be sent">`; // Affiche l'image choisie par l'utilisateur a l'interieur de l'encart.
 })
 
-const emptyUserPicBox = function(){
+const emptyUserPicBox = function(){ // Reinitialise l'ensemble du formulaire de modale2.
     let modale2Form = document.querySelector(".modale2 form");
     let select = document.querySelector("#inputCategory"); 
 
-    modale2Button.classList.add("invisible"); // cache le bouton valider de modale2
-    modale2Form.reset(); // reset le formulaire
-    select.selectedIndex = -1; //reset la categorie
+    modale2Button.classList.add("invisible"); 
+    modale2Form.reset(); 
+    select.selectedIndex = -1; 
     userPicBox.innerHTML = `							
     <i class="fa-regular fa-image"></i>
     <span><p>+ Ajouter photo</p></span>				
     <p>jpeg, png : 4mo max</p>
-    ` // Affiche le html d'origine
+    ` 
 };
 
-let inputCategory = document.querySelector("#inputCategory"); // affiche le bouton si tous les champs ont une valeur
+let inputCategory = document.querySelector("#inputCategory"); // affiche modale2Button si tous les champs du formulaire ont une valeur.
 inputCategory.addEventListener("change", () => { 
     
     if (document.getElementById('inputFile').value !== '' && 
     document.getElementById('inputCategory').value !== '' && 
     document.getElementById('inputTitle').value !== '') { 
         modale2Button.classList.remove("invisible");
-    }else {modale2Button.classList.add("invisible");}
-})
+    } else { 
+        modale2Button.classList.add("invisible");
+    }
+});
 
 
-let inputTitle = document.querySelector("#inputTitle"); // affiche le bouton si tous les champs ont une valeur
+let inputTitle = document.querySelector("#inputTitle"); // affiche modale2Button si tous les champs du formulaire ont une valeur.
 inputTitle.addEventListener("change", () => { 
     
     if (document.getElementById('inputFile').value !== '' && 
     document.getElementById('inputCategory').value !== '' && 
     document.getElementById('inputTitle').value !== '') { 
         modale2Button.classList.remove("invisible");
-    }
-    else {
+    } else {
         modale2Button.classList.add("invisible");
-    }})
-
+    }
+});
 // Integration de l'image choisie par User dans le formulaire + bouton valider
 // Integration de l'image choisie par User dans le formulaire + bouton valider
 
@@ -86,6 +81,7 @@ let filters = await getFilters()
 // Recuperation DATA
 // Recuperation DATA
 
+
 // Display gallerie
 // Display gallerie
 let gallerie = document.querySelector(".gallery");
@@ -100,7 +96,7 @@ let displayGallerie = async function() {
         </figure>`
     }
 };
-window.addEventListener("load",(displayGallerie())); // Au chargement de la page
+window.addEventListener("load",(displayGallerie())); // Affichage au chargement de la page.
 // Display gallerie
 // Display gallerie
 
@@ -110,20 +106,20 @@ window.addEventListener("load",(displayGallerie())); // Au chargement de la page
 let folioAnchor = document.querySelector("#portfolio");
 let gallerieGrid = document.querySelector('.gallery')
 let filterBox = document.createElement('div');
-folioAnchor.insertBefore(filterBox, gallerieGrid); // Insertion des filtres juste avant la gallerie 
+folioAnchor.insertBefore(filterBox, gallerieGrid); // Insertion de filterBox juste avant la gallerie.
 
-let tousButton = document.createElement('div'); // Bouton Tous Filter Display
+let tousButton = document.createElement('div'); // Creation du bouton-filtre "Tous".
 filterBox.appendChild(tousButton);
 tousButton.innerText = "Tous";
 tousButton.id = 0; 
 tousButton.classList.add("filterButton");
 
-let displayFilters = function() { // Dynamic Filters Display
+let displayFilters = function() { // creation des bouton-filtre pour chaque categorie.
    for(let i = 0; i < filters.length; i++) {
-        let filterTag = document.createElement('div'); // cree un bouton pour chaque filtre
+        let filterTag = document.createElement('div'); 
         filterBox.appendChild(filterTag); 
         filterTag.innerText= filters[i].name;
-        filterTag.id = filters[i].id;   // attribue au bouton le meme id que son filtre
+        filterTag.id = filters[i].id; // Associe aux boutons le meme "id" que leur categorie correspondante.
         filterTag.classList.add("filterButton");         
     }
     filterBox.classList.add("filterBox");
@@ -132,13 +128,14 @@ displayFilters()
 // Integration dynamique des filtres
 // Integration dynamique des filtres
 
-//Boutons filtres
-//Boutons filtres
+
+// Fonctionnement des boutons-filtres
+// Fonctionnement des boutons-filtres
 let filtering = function(buttonArg){ // filtre les travaux en fonction du bouton clique
     console.log('filtrage en cours');
-    gallerie.innerHTML = ""; // reset gallerie
+    gallerie.innerHTML = "";
     if(buttonArg.id == 0 ){ // si "tous" est le bouton argument
-        displayGallerie(); // Affiche toute la gallerie
+        displayGallerie();
     } else {        
         for(let work of works) {
             if(work.category.id == buttonArg.id){
@@ -151,18 +148,17 @@ let filtering = function(buttonArg){ // filtre les travaux en fonction du bouton
             }
         }
 };
-let buttonList = document.querySelectorAll(".filterButton"); // Identifie le bouton clique et le passe en argument de filtering
-for (let button of buttonList){ // button prend les valeurs de la NodeList
+
+let buttonList = document.querySelectorAll(".filterButton"); 
+for (let button of buttonList){ 
     button.addEventListener("click", () => {
         console.log(`click sur bouton ${button.id}`)
         filtering(button)
     });
 }
-//Boutons filtres
-//Boutons filtres
+// Fonctionnement des boutons-filtres
+// Fonctionnement des boutons-filtres
 
-
-// HOMEPAGE //
 
 // Affichage de la page login //
 // Affichage de la page login //
@@ -177,6 +173,7 @@ logButt.addEventListener("click", () => {
 // Affichage de la page login //
 // Affichage de la page login //
 
+
 // Integration Dynamique admin Mod
 // Integration Dynamique admin Mod
 let bodyAnchor = document.querySelector("body");
@@ -186,18 +183,19 @@ let folioTitle = document.querySelector('#portfolio h2');
 let modifButton = document.createElement('div');
 let introduction =document.querySelector("#introduction")
 
-let adminMod = function() {  // Je dois encore changer login en logout
+let adminMod = function() {  
     modHeaderBand.innerHTML= `<i class="fa-regular fa-pen-to-square"></i> <p>Mode edition</p>`;
-    bodyAnchor.prepend(modHeaderBand); // Definit comme premier-ne de header
-    originalHeader.setAttribute("style", "margin-top: 38px;"); // Reduction dynamique de 50 a 38px;
-    introduction.setAttribute("style", "margin-top: 92px;") // reduction dynamique de 139 a 92px;
+    bodyAnchor.prepend(modHeaderBand);
+
+    originalHeader.setAttribute("style", "margin-top: 38px;"); // Ajustement dynamique de 50 a 38px;
+    introduction.setAttribute("style", "margin-top: 92px;") // Ajustement dynamique de 139 a 92px;
 
     modHeaderBand.classList.add("rowBox");
     modHeaderBand.classList.add("modHeaderBand");
     
-    folioAnchor.prepend(folioTextBox); // La boite txt en premier enfant de portfolio
+    folioAnchor.prepend(folioTextBox); 
     folioTextBox.appendChild(folioTitle);
-    folioTextBox.appendChild(modifButton); // Affiche le bouton modifier
+    folioTextBox.appendChild(modifButton); 
 
     folioTextBox.classList.add("rowBox");
     modifButton.classList.add("rowBox");
@@ -205,23 +203,32 @@ let adminMod = function() {  // Je dois encore changer login en logout
     modifButton.classList.add("anyButton");
 
     modifButton.innerHTML = `<i class="fa-regular fa-pen-to-square"></i> <p>modifier</p>` 
-    filterBox.innerHTML= " ";    // Fait disparaitre les filtres sans decaller les elements du DOM
-    homePage.classList.toggle("invisible"); // disparition homepage
-    loginPage.classList.toggle("invisible"); // apparition loginpage
+    filterBox.innerHTML= " ";    // Disparition des filtres, sans alteration des marges.
 
-    logButt.innerHTML = "logout"
-    logButt.addEventListener("click", () => { // bouton logout ->
-        localStorage.clear(); // vide localstorage
-        window.location.reload(true); // rechargement page sans le cache
+    homePage.classList.toggle("invisible"); 
+    loginPage.classList.toggle("invisible"); 
+
+    // login devient logout ->
+    logButt.innerHTML = "logout" 
+    logButt.addEventListener("click", () => { 
+        localStorage.clear(); // vide le localstorage.
+        window.location.reload(true); // recharge la page sans le cache.
     });    
 }
 // Integration Dynamique admin Mod
 // Integration Dynamique admin Mod
 
+
+
+
 let modalePage = document.querySelector("#modalePage");
 let modaleBox = document.querySelector(".modaleBox")
 let originalHeader = document.querySelector('header:not([class])');
 let modGallery = document.querySelector(".modGallery")
+
+
+
+
 
 // Affiche la galerie fonctionnelle de modale1 (images et corbeilles)
 // Affiche la galerie fonctionnelle de modale1 (images et corbeilles)
@@ -239,24 +246,21 @@ let displayModGallery = async function() {
         </div>
         </figure>`
 
-        // Ci-dessous, le selecteur permet de target la corbeille (localBin) actuelle dans la boucle.
+        // Selection de la corbeille "localBin" actuelle a l'interieur de la boucle.
         let localBin = document.querySelector(".modGallery figure:last-of-type div"); 
-        localBin.setAttribute("id", `${work.id}`); // On lui donne un id identique a celui du work actuel de la boucle. 
+        localBin.setAttribute("id", `${work.id}`); // Partage du meme "id" entre localBin et "work". 
     }
 
-    let corbeilles = document.querySelectorAll(".modGallery figure div"); // On def le comportement des corbeilles.
+    let corbeilles = document.querySelectorAll(".modGallery figure div"); // Definition du comportement des corbeilles.
     for (let corbeille of corbeilles) {
         corbeille.addEventListener("click", () => { 
-            delWork(corbeille.id); // la corbeille lance delWork() avec son id comme argument.
+            delWork(corbeille.id); // La corbeille lance delWork() avec son "id comme" argument.
         });
 }
 };
-// Affiche la galerie fonctionnelle de modale1 (images et corbeilles)
-// Affiche la galerie fonctionnelle de modale1 (images et corbeilles)
 
-// Requete DELETE
-// Requete DELETE
-let delWork = async function(id) { // Delete selon l'id (de la corbeille)renseigne en argument.
+
+let delWork = async function(id) { // Delete selon l'id (de la corbeille) renseigne en argument.
     let userToken = localStorage.getItem('userToken');
     console.log(`usertoken -> ${userToken}`);
     const response = await fetch(`http://localhost:5678/api/works/${id}`, {
@@ -276,18 +280,18 @@ let delWork = async function(id) { // Delete selon l'id (de la corbeille)renseig
             }
     })
 };
-// Requete DELETE
-// Requete DELETE
+// Affiche la galerie fonctionnelle de modale1 (images et corbeilles)
+// Affiche la galerie fonctionnelle de modale1 (images et corbeilles)
+
 
 // ouverture et fermeture de la modale
 // ouverture et fermeture de la modale
-modaleBox.addEventListener("click", (event) => { // Pour la boite soit click-proof.
-    event.stopPropagation(); // sinon quand je clique sur la boite ca ferme modalePage.
-    // Il faut definir ce comportement pq modaleBox est l'enfant de modalePage
+modaleBox.addEventListener("click", (event) => { // Necessaire pour eviter le click de "modalePage" a travers son enfant "modaleBox".
+    event.stopPropagation();
 });
 
 let openModale = function() {  
-    bodyAnchor.insertBefore(modalePage,modHeaderBand); // pour position absolute -> literalement "over the top"
+    bodyAnchor.insertBefore(modalePage,modHeaderBand);
     modalePage.appendChild(modaleBox);
     modalePage.classList.toggle("invisible");
     displayModGallery();
@@ -306,14 +310,14 @@ let closeModale = function(){
     displayGallerie();   
 };
 
-let leftArrowButton = document.querySelector(".modale2 .leftArrowButton"); // bouton retour
+let leftArrowButton = document.querySelector(".modale2 .leftArrowButton"); // bouton-retour ; Depuis modale2 vers modale1.
 leftArrowButton.addEventListener("click",() => {
     emptyUserPicBox();
     modale2.classList.toggle("invisible");
     modale1.classList.toggle("invisible");
 });
 
-let crossButton = document.querySelectorAll(".modaleBox .crossButton"); // boutons croix ; Ferme la modale 
+let crossButton = document.querySelectorAll(".modaleBox .crossButton"); // boutons croix ; Ferment les modales.
 for(let cross of crossButton) {
     cross.addEventListener("click", (event) => {
         console.log("crossButton clicked");
@@ -321,7 +325,8 @@ for(let cross of crossButton) {
            
     });
 }
-modalePage.addEventListener("click", (event) => {
+
+modalePage.addEventListener("click", () => {
     console.log("modalePage clicked");
     closeModale();     
 });
@@ -330,43 +335,39 @@ modalePage.addEventListener("click", (event) => {
 
 
 
-// Passage d'une modale a l'autre au clique "ajouter photo"
-// Passage d'une modale a l'autre au clique "ajouter photo"
+// Changement de modale au clique du bouton "ajouter photo".
+// Changement de modale au clique du bouton "ajouter photo".
 let modale1 = document.querySelector(".modale1")
 let modale2 = document.querySelector(".modale2")
 let modale1Button = document.querySelector(".modale1 button");
 
-modale1Button.addEventListener("click", (event) => {
+modale1Button.addEventListener("click", () => {
     modale1.classList.toggle("invisible");
     modale2.classList.toggle("invisible"); 
 });
-// Passage d'une modale a l'autre au clique "ajouter photo"
-// Passage d'une modale a l'autre au clique "ajouter photo"
+// Changement de modale au clique du bouton "ajouter photo".
+// Changement de modale au clique du bouton "ajouter photo".
 
 
 //Contenu dynamique de la balise select
 //Contenu dynamique de la balise select
-// je pourrais mettre tout ca dans une fonction,et l'appeler directement apres la creation de la balise select mais bon ...
-let select = document.querySelector("#inputCategory"); 
+let select = document.querySelector("#inputCategory"); //Definition des options du volet deroulant.
 for(let i = 0; i < filters.length; i++) {
     let option = document.createElement('option');
     select.appendChild(option); 
-    option.setAttribute('value', filters[i].id); // La valeur enregistree est l'id de la categorie
-    option.innerText = filters[i].name; // l'option affichee est le nom de la categorie     
+    option.setAttribute('value', filters[i].id); // La valeur enregistree sera l'id de categorie.
+    option.innerText = filters[i].name; // l'option affichee sera le nom de categorie.    
 }
 select.selectedIndex = -1;
-// je pourrais mettre tout ca dans une fonction,et l'appeler directement apres la creation de la balise select mais bon ...
 //Contenu dynamique de la balise select
 //Contenu dynamique de la balise select
 
-//Modale2 -> fetch new image)
-//Modale2 -> fetch new image)
 
+// Ajout d'une nouvelle image dans la gallerie. 
+// Ajout d'une nouvelle image dans la gallerie. 
 let modale2Button = document.querySelector(".modale2 button");
 
-
-
-modale2Button.addEventListener("click", (event) => {
+modale2Button.addEventListener("click", () => {
 
     let userToken = localStorage.getItem('userToken');
     let modale2Form = document.querySelector(".modale2 form");
@@ -393,35 +394,33 @@ modale2Button.addEventListener("click", (event) => {
             displayModGallery();
             displayGallerie();
         }
-        // return response.json(); // Pas forcement besoin du return; On le laisse la en attendant.
+    
     })
 
 });
-//Modale2 -> fetch new image)
-//Modale2 -> fetch new image)
+// Ajout d'une nouvelle image dans la gallerie. 
+// Ajout d'une nouvelle image dans la gallerie. 
 
 
 // Gestion du login //
 // Gestion du login //
-const loginURL = 'http://localhost:5678/api/users/login'; // L'URL de swagger pour login
+const loginURL = 'http://localhost:5678/api/users/login'; // L'URL de swagger pour la connexion
 const loginButton = document.querySelector(".loginBox button"); // Mon bouton "se connecter"
 
-let extractDataForm = function() { // Return les valeurs du formulaire directement dans le bon format.
+let extractDataForm = function() { // Alternative a l'utilisation de FormData ;
 
     let passwordInput = document.querySelector('.loginBox input[name="password"]')
     let emailInput = document.querySelector('.loginBox input[name="email"]')
  
-    return `{
+    return `{ 
      "email": "${emailInput.value}",
      "password": "${passwordInput.value}"
    }`
-// C'est un peu hardcodey mais bon ... c'est plus simple comme ca.
-// J'avais pas envie de convertir un objet FormData en JSON ... 
  }
 
- loginButton.addEventListener("click", event => {  // Connexion si click
+ loginButton.addEventListener("click", event => {  // Connexion.
 
-    event.preventDefault(); // pas de rechargement
+    event.preventDefault();
 
     let postLogin = fetch(loginURL, { 
         method: "POST",
@@ -429,17 +428,17 @@ let extractDataForm = function() { // Return les valeurs du formulaire directeme
         body: extractDataForm()
     });
 
-    postLogin // chaque .then reprend le return de la promesse precedente
-    .then((pouniette) => { // Le parametre definit ici contient la reponse'serveur'-> un Objet de type response
-        if(!pouniette.ok) { // .ok est un attribut d'objet de type response ("pouniette")
+    postLogin 
+    .then((response) => { 
+        if(!response.ok) { 
             document.getElementById("errorMessage").style.display = "block";
             throw new Error("Erreur dans l'identifiant ou le mot de passe");
         } else {
             adminMod()            
-            return pouniette.json();  // On convertit la reponse en format JSON pour l'exploiter 
+            return response.json();  
         }
     })
-    .then((json) => { // json provient du return precedent ; -> Objet userId ; token
+    .then((json) => { 
         let userToken = json
         localStorage.setItem('userToken', userToken.token); 
     })
@@ -448,4 +447,3 @@ let extractDataForm = function() { // Return les valeurs du formulaire directeme
 // Gestion du login // 
 
 
-// le bouton valider de modale2 ne doit apparaitre que si les champs du formulaire sont completes  

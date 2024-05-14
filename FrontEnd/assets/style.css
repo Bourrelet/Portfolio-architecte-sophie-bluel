@@ -1,15 +1,8 @@
-html {
-	height: 100%; 
-	position: relative;
-	/* pour forcer le bon positionnement de modalePage */
-}
 
 body {
-	height: 100%;
-	/* pour forcer le bon positionnement de modalePage */
+	line-height: 1;
 	background-color: rgba(255, 254, 248, 1);
 }
-
 
 button[type="button"]:hover, input[type="submit"]:hover, button[class="anyButton"]:hover {
 	cursor: pointer;
@@ -94,13 +87,6 @@ footer, header, hgroup, menu, nav, section {
 	color: white;
    }
 
-
-
-
-body {
-	line-height: 1;
-	/* background-color: rgba(255, 254, 248, 1) !important;   Ca fonctionne pas ... */
-}
 ol, ul {
 	list-style: none;
 }
@@ -275,10 +261,7 @@ footer nav ul {
 
 :root {
 	--vert-foret: rgba(29, 97, 84, 1);
-  }
-
-
-  
+  }  
 
 .invisible {
 	display: none !important;
@@ -332,36 +315,29 @@ footer nav ul {
 	text-align: left;
 }
 
-.modalePage { /*Voile gris sur la page*/
+.modalePage { /* Filtre gris en mode admin */
 	position: fixed; /*recouvre toute la page facilement*/
     z-index: 500;
     background-color: rgba(0, 0, 0, 0.3);
     width: 1440px;
     height: 100%;
+	left: 50%; 
+    transform: translateX(-50%); 
 
-    /*Pour suivre le margin auto de body*/
-	left: 50%; /* Place l'élément à 50% de la largeur du conteneur parent */
-    transform: translateX(-50%); /* Décale l'élément de moitié de sa propre largeur vers la gauche */
-	/*Merci chatGPT*/
 }
 
-
-
 .modaleBox {
-
 	z-index: 750;
 	width: 630px;
 	height: 688px;
 	text-align: center;
 	background-color: white;
 	position: absolute;
-	/* // centrage automatique */
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
-	
-	
+    transform: translate(-50%, -50%);	
 }
+
 .modale1 nav {
 	display: flex;
 	justify-content: flex-end;
@@ -384,7 +360,6 @@ footer nav ul {
 	width: 21px;
 }
 
-
 .crossButton {
 	margin-right: 30px;
 	margin-top: 26px;
@@ -399,11 +374,6 @@ footer nav ul {
 	margin: 6px;
 
 }
-
-
-/* .arrowLeftButton {
-
-} */
 
 
 .rowBox {
@@ -497,15 +467,11 @@ footer nav ul {
 	cursor: pointer;
    }
 
-   .fa-trash-can { /*corbeille*/
+   .fa-trash-can { 
 	font-size: 0.75em;
 	position: relative;
     bottom: 0.5px;
    }
-
-   /* .modaleBox nav {
-	justify-content: space-between;
-   } */
 
    header nav ul li:hover {
 	cursor: pointer;
@@ -523,6 +489,7 @@ footer nav ul {
 	font-size: 1.2em;
 	text-align: center;
    }
+
    #loginPage label {
 	margin-top: 30px;
 
@@ -540,11 +507,12 @@ footer nav ul {
 	label[for="inputFile"] {
 		display: block;
 		width: 420px;
+		margin: 36px 105px 30px 105px;
 	}
 
 	.inputFileBox {
 		background-color: rgba(232, 241, 246, 1);
-		margin: 36px 105px 30px 105px;
+		
 		display: flex;
 		flex-direction: column;
 		align-items: center;

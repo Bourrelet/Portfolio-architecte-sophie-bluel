@@ -1,7 +1,7 @@
 // Integration de l'image choisie par User dans le formulaire + bouton valider
 // Integration de l'image choisie par User dans le formulaire + bouton valider
 let inputFile = document.querySelector("#inputFile");
-let userPicBox = document.querySelector('label[for="inputFile"] div');
+let userPicBox = document.querySelector('label[for="inputFile"] span');
 
 inputFile.addEventListener("change", () => { 
 

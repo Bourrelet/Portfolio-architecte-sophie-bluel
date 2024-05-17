@@ -13,7 +13,7 @@
 	<script src="https://kit.fontawesome.com/6cff575391.js" crossorigin="anonymous"></script>
 	<meta name="description" content="">
 	<link rel="stylesheet" href="./assets/style.css">
-	<script type="module" src="./frontEndEva.js" defer></script> 
+	<script type="module" src="./frontEndEva.js"></script> 
 
 	
 </head>
@@ -95,10 +95,10 @@
 			<h2>Contact</h2>
 			<p>Vous avez un projet ? Discutons-en !</p>
 			<form action="#" method="post">
-				<label for="name">Nom</label>
-				<input type="text" name="name" id="name">
-				<label for="email">Email</label>
-				<input type="email" name="email" id="email">
+				<label for="Contactname">Nom</label>
+				<input type="text" name="name" id="Contactname">
+				<label for="Contactemail">Email</label>
+				<input type="email" name="email" id="Contactemail">
 				<label for="message">Message</label>
 				<textarea name="message" id="message" cols="30" rows="10"></textarea>
 				<input type="submit" value="Envoyer">
@@ -112,10 +112,10 @@
 			<form method="post" action="#" class="loginBox"> 
 	
 				<label for="email">E-mail</label>
-				<input type="email" name="email" value="sophie.bluel@test.tld" required>
+				<input type="email" name="email"  id="email" value="sophie.bluel@test.tld" required>
 	
 				<label for="password">Mot de passe</label>
-				<input type="password" name="password" value="S0phie" required>            
+				<input type="password" name="password" id="password" value="S0phie" required>            
 				
 				<button type="button" id="loginButton" class="buttonStyle"><span>Se connecter</span></button>
 				<p id="errorMessage" style="color: red; display: none;">Erreur dans l'identifiant ou le mot de passe</p>
@@ -146,11 +146,11 @@
 				<form method="post" action="#"> 
 
 					<label for="inputFile">
-						<div class="inputFileBox">
+						<span class="inputFileBox">
 							<i class="fa-regular fa-image"></i>
 							<span><p>+ Ajouter photo</p></span>				
 							<p>jpeg, png : 4mo max</p>
-						</div>
+						</span>
 					</label>
 					<input type="file" required id="inputFile" name="image" accept="image/*">
 			
@@ -160,7 +160,7 @@
 					<label for="inputCategory">Catégorie</label>
 					<select name="category" id="inputCategory"></select>
 					<hr>
-					<button type="button" class="anyButton invisible" class="addPhoto">Valider</button>
+					<button type="button" class="anyButton invisible addPhoto">Valider</button>
 			
 				</form>
 			</div>
